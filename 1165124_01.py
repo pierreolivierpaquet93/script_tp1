@@ -39,6 +39,21 @@ message!"
 
 '''
 
+# https://realpython.com/python-main-function/
+
 CHAR_TARGET =	"~io?a"
 CHAR_VALUE =	"aeiou"
 CHAR_IGNORE =	">aeiou"
+
+PROMPT_IN = "Veuillez entrer une phrase à décrypter: "
+
+def user_input():
+	user_input = ""
+	while user_input == "":
+		user_input = input( PROMPT_IN )
+
+def main():
+	user_input()
+
+if __name__ == "__main__":
+	main()
