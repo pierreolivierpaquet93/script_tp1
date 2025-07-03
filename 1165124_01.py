@@ -40,20 +40,38 @@ message!"
 '''
 
 # https://realpython.com/python-main-function/
+# https://www.w3schools.com/python/python_classes.asp
+# https://www.datacamp.com/tutorial/python-private-methods-explained
+# https://www.geeksforgeeks.org/python/protected-variable-in-python/
 
-CHAR_TARGET =	"~io?a"
-CHAR_VALUE =	"aeiou"
-CHAR_IGNORE =	">aeiou"
+CHAR_TARGET	=	"~io?a"
+CHAR_VALUE	=	"aeiou"
+CHAR_IGNORE	=	">aeiou"
 
-PROMPT_IN = "Veuillez entrer une phrase à décrypter: "
+PROMPT_IN	=	"Veuillez entrer une phrase à décrypter: "
 
-def user_input():
-	user_input = ""
-	while user_input == "":
-		user_input = input( PROMPT_IN )
+class Decrypt:
+	_decrypted = ""
+	_encrypted = ""
+	def __init__( self ):
+		self.setEncrypted()
+
+	def setEncrypted( self ):
+		user_input = ""
+		while user_input == "":
+			user_input = input( PROMPT_IN )
+		self._encrypted = user_input
+
+	#def _decrypt( self ):
+
+	def getEncrypted( self ):
+		print( self._encrypted )
+
+	def getDecrypted( self ):
+		print( self._decrypted )
 
 def main():
-	user_input()
+	message = Decrypt()
 
 if __name__ == "__main__":
 	main()
