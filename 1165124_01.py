@@ -44,17 +44,20 @@ message!"
 # https://www.datacamp.com/tutorial/python-private-methods-explained
 # https://www.geeksforgeeks.org/python/protected-variable-in-python/
 
-CHAR_TARGET	=	"~io?a"
-CHAR_VALUE	=	"aeiou"
-CHAR_IGNORE	=	">aeiou"
+CHAR_TARGETS	=	"~io?a"
+CHAR_VALUES		=	"aeiou"
+CHAR_IGNORE		=	">aeiou"
+FLAG			=	'-'
 
 PROMPT_IN	=	"Veuillez entrer une phrase à décrypter: "
 
 class Decrypt:
 	_decrypted = ""
 	_encrypted = ""
+	_size = 0
 	def __init__( self ):
 		self.setEncrypted()
+		self._decrypt()
 
 	def setEncrypted( self ):
 		user_input = ""
@@ -62,13 +65,47 @@ class Decrypt:
 			user_input = input( PROMPT_IN )
 		self._encrypted = user_input
 
-	#def _decrypt( self ):
+	def _decrypt( self ):
+		self._size = len( self._encrypted )
+		i = 0
+		while i < self._size:
+			if self._encrypted[i] == FLAG:
+				i += 1
+				if i < self._size:
+					l = self._checkTargetChar( self._encrypted[i] )
+					if l >= 0:
+						self._decrypted += ( CHAR_VALUES[l] )
+			elif self._checkIgnoreChar( self._encrypted[i] ) == False:
+				self._decrypted += ( self._encrypted[i] )
+			i += 1
+		print( self._decrypted )
+
+	def _checkTargetChar( self, char ):
+		i = 0
+		size = len( CHAR_TARGETS )
+		while i < size:
+			if CHAR_TARGETS[i] == char:
+				return( i )
+			i += 1
+		return ( -1 )
+
+	def _checkIgnoreChar( self, char ):
+		for letter in CHAR_IGNORE:
+			if letter == char:
+				return( True )
+		return( False )
 
 	def getEncrypted( self ):
-		print( self._encrypted )
+		return( self._encrypted )
 
 	def getDecrypted( self ):
-		print( self._decrypted )
+		return( self._decrypted )
+
+	def displayEncrypted( self ):
+		print( self.getEncrypted() )
+
+	def displayDecrypted( self ):
+		print( self.getDecrypted() )
 
 def main():
 	message = Decrypt()
