@@ -1,5 +1,11 @@
 # https://stackoverflow.com/questions/9195455/how-to-document-a-method-with-parameters
 
+# ----------------------------------------------------------------- [ MODULE.S ]
+
+# TESTING
+# https://cs.stanford.edu/people/nick/py/python-main.html
+import sys
+
 # --------------------------------------------------------------- [ CONSTANT.S ]
 
 CHAR_TARGETS	=	"~io?a"
@@ -28,8 +34,8 @@ class Decrypt:
 
 	def setEncrypted( self, msg_to_decrypt=None ):
 		"""
-			- Takes input from user (user_input)
-			- Stores the original input.
+			- If needed, takes input from user (user_input)
+			- Stores the encrypted (original) input.
 			- Launch the decrypting method.
 		"""
 		if msg_to_decrypt:
@@ -39,6 +45,7 @@ class Decrypt:
 			while user_input == "":
 				user_input = input( PROMPT_IN )
 			self._encrypted = user_input
+		self._size = len( self._encrypted )
 		self._decrypt()
 
 	def _decrypt( self ):
@@ -48,7 +55,6 @@ class Decrypt:
 				- If found, validates the following character.
 			- Also validates if each character should be ignored.
 		"""
-		self._size = len( self._encrypted )
 		i = 0
 		while i < self._size:
 			if self._encrypted[i] == FLAG:
@@ -102,8 +108,11 @@ class Decrypt:
 # https://realpython.com/python-main-function/
 
 def main():
-	message = Decrypt()
-	test1=Decrypt( "Yoo-i-ih!" )
+	arguments = sys.argv
+	if len( arguments ) > 1:
+		message=Decrypt( arguments[1] )
+	else:
+		message=Decrypt()
 
 if __name__ == "__main__":
 	main()
