@@ -25,7 +25,7 @@ TEST_3	=	f"{TEST}#3\n",\
 			"-",\
 			""
 TEST_4	=	f"{TEST}#4\n",\
-			"aeiou",\
+			">>>aeiou>>>",\
 			""
 TEST_5	=	f"{TEST}#5\n",\
 			"-~-i-o-?-a",\

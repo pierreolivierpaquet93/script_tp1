@@ -8,13 +8,18 @@ import sys
 
 # --------------------------------------------------------------- [ CONSTANT.S ]
 
-CHAR_TARGETS	=	"~io?a"
-CHAR_VALUES		=	"aeiou"
-CHAR_IGNORE		=	">aeiou"
+#COLORS
+ESC	= "\033["
+BLU	= f"{ESC}" + "1;34m"
+RST	= f"{ESC}" + "0m"
 
-FLAG			=	'-'
+CHAR_TARGETS	= "~io?a"
+CHAR_VALUES		= "aeiou"
+CHAR_IGNORE		= ">aeiou"
 
-PROMPT_IN	=	"Veuillez entrer une phrase à décrypter: "
+FLAG	= '-'
+
+PROMPT_IN	= f"{BLU}Veuillez entrer une phrase à décrypter: {RST}"
 
 # ----------------------------------------------------------------- [ CLASS.ES ]
 # https://www.w3schools.com/python/python_classes.asp
