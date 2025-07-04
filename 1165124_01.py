@@ -1,55 +1,19 @@
-'''
-[ ]	Ne pas utiliser de librairie externe
-[ ]	Demandez une phrase en entrée
-[ ]	Vous devez passer vérifier chaque lettre et les traités selon les
-	conditions;
-	[ ]	Si le caractère est un "-", vous devez remplacer le prochain caractère
-		selon cette table de conversion:
-		.----------------------.---------------------.
-		| CARACTÈRE DU MESSAGE | CARACTÈRE RÉSULTANT |
-		|----------------------+---------------------|
-		|           ~          |          a          |
-		|           i          |          e          |
-		|           o          |          i          |
-		|           ?          |          o          |
-		|           a          |          u          |
-		'----------------------'---------------------'
-	[ ] Si ces charactères sont présent, vous devez les ignorer:
-		.---------------------.
-		| CARACTÈRE À IGNORER |
-		|---------------------|
-		|          >          |
-		|          a          |
-		|          e          |
-		|          i          |
-		|          o          |
-		|          u          |
-		'---------------------'
-	[ ] Afficher le message décrypté.
+# https://stackoverflow.com/questions/9195455/how-to-document-a-method-with-parameters
 
-Voici des exemples d’entrée et sortie valide:
-[ ] "Ha-i>lilu>-?>i>o>i> W>aei>-?r>luo>d!"
-	-> "Hello World!"
-[ ] "C-?enig>a>ir>-~t-al-~t-o>-?nos Yao-?-a eooiodo>ii-od o-oit>u!ia Se-?
-	cu-?a-?uula! Iut'oso r-ia>>u-~lly -oncro-id-oeu>>iib>l-ieeaaui tih-~t
-	y>-?-aa c>i>-~n ur-i>-~uuood>au toh-~tui >>m>e-iss-~gooo-io>!"
-	-> "Congratulations You did it! So cool! It's really incredible that yo
-	can read that
-message!"
-
-'''
-
-# https://realpython.com/python-main-function/
-# https://www.w3schools.com/python/python_classes.asp
-# https://www.datacamp.com/tutorial/python-private-methods-explained
-# https://www.geeksforgeeks.org/python/protected-variable-in-python/
+# --------------------------------------------------------------- [ CONSTANT.S ]
 
 CHAR_TARGETS	=	"~io?a"
 CHAR_VALUES		=	"aeiou"
 CHAR_IGNORE		=	">aeiou"
+
 FLAG			=	'-'
 
 PROMPT_IN	=	"Veuillez entrer une phrase à décrypter: "
+
+# ----------------------------------------------------------------- [ CLASS.ES ]
+# https://www.w3schools.com/python/python_classes.asp
+# https://www.datacamp.com/tutorial/python-private-methods-explained
+# https://www.geeksforgeeks.org/python/protected-variable-in-python/
 
 class Decrypt:
 	_decrypted = ""
@@ -81,6 +45,11 @@ class Decrypt:
 		print( self._decrypted )
 
 	def _checkTargetChar( self, char ):
+		"""
+			:param str char: 
+			:return: The index from CHAR_TARGETS where [char] was found. \
+			Returns -1 if [char] was not found.
+		"""
 		i = 0
 		size = len( CHAR_TARGETS )
 		while i < size:
@@ -90,6 +59,10 @@ class Decrypt:
 		return ( -1 )
 
 	def _checkIgnoreChar( self, char ):
+		"""
+			:param str char: A single character from an encrypted message.
+			:return: Whether [char] was found in CHAR_IGNORE
+		"""
 		for letter in CHAR_IGNORE:
 			if letter == char:
 				return( True )
@@ -106,6 +79,9 @@ class Decrypt:
 
 	def displayDecrypted( self ):
 		print( self.getDecrypted() )
+
+# --------------------------------------------------------------------- [ MAIN ]
+# https://realpython.com/python-main-function/
 
 def main():
 	message = Decrypt()
