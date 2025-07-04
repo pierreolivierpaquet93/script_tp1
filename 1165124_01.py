@@ -19,17 +19,35 @@ class Decrypt:
 	_decrypted = ""
 	_encrypted = ""
 	_size = 0
-	def __init__( self ):
-		self.setEncrypted()
+
+	def __init__( self, msg_to_decrypt=None ):
+		if not msg_to_decrypt:
+			self.setEncrypted()
+		else:
+			self.setEncrypted( msg_to_decrypt )
+
+	def setEncrypted( self, msg_to_decrypt=None ):
+		"""
+			- Takes input from user (user_input)
+			- Stores the original input.
+			- Launch the decrypting method.
+		"""
+		if msg_to_decrypt:
+			self._encrypted = msg_to_decrypt
+		else:
+			user_input = ""
+			while user_input == "":
+				user_input = input( PROMPT_IN )
+			self._encrypted = user_input
 		self._decrypt()
 
-	def setEncrypted( self ):
-		user_input = ""
-		while user_input == "":
-			user_input = input( PROMPT_IN )
-		self._encrypted = user_input
-
 	def _decrypt( self ):
+		"""
+			- Parses encrypted message.
+			- Searching for FLAG
+				- If found, validates the following character.
+			- Also validates if each character should be ignored.
+		"""
 		self._size = len( self._encrypted )
 		i = 0
 		while i < self._size:
@@ -85,6 +103,7 @@ class Decrypt:
 
 def main():
 	message = Decrypt()
+	test1=Decrypt( "Yoo-i-ih!" )
 
 if __name__ == "__main__":
 	main()
