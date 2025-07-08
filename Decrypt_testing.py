@@ -1,4 +1,4 @@
-import Decrypt
+import decrypt
 
 GRN = "\033[1;32m"
 RED = "\033[1;31m"
@@ -29,40 +29,40 @@ TEST_4	=	f"{TEST}#4\n",\
 			""
 TEST_5	=	f"{TEST}#5\n",\
 			"-~-i-o-?-a",\
-			f"{Decrypt.CHAR_VALUES}"
+			f"{decrypt.CHAR_VALUES}"
 # -------------------------------------------------------------------- [ TESTS ]
 
 print( f"{TEST_1[0]}" + f"Encrypted: {TEST_1[1]}" )
-message = Decrypt.Decrypt( TEST_1[1] )
-if message.getDecrypted() == TEST_1[2]:
+message = decrypt.decrypt( TEST_1[1] )
+if message.getdecrypted() == TEST_1[2]:
 	print( TEST_OK )
 else:
 	print( TEST_KO )
 
 print( f"{TEST_2[0]}" + f"Encrypted: {TEST_2[1]}" )
-message = Decrypt.Decrypt( TEST_2[1] )
-if message.getDecrypted() == TEST_2[2]:
+message = decrypt.decrypt( TEST_2[1] )
+if message.getdecrypted() == TEST_2[2]:
 	print( TEST_OK )
 else:
 	print( TEST_KO )
 
 print( f"{TEST_3[0]}" + f"Encrypted: {TEST_3[1]}" )
-message = Decrypt.Decrypt( TEST_3[1] )
-if message.getDecrypted() == TEST_3[2]:
+message = decrypt.decrypt( TEST_3[1] )
+if message.getdecrypted() == TEST_3[2]:
 	print( TEST_OK )
 else:
 	print( TEST_KO )
 
 print( f"{TEST_4[0]}" + f"Encrypted: {TEST_4[1]}" )
-message = Decrypt.Decrypt( TEST_4[1] )
-if message.getDecrypted() == TEST_4[2]:
+message = decrypt.decrypt( TEST_4[1] )
+if message.getdecrypted() == TEST_4[2]:
 	print( TEST_OK )
 else:
 	print( TEST_KO )
 
 print( f"{TEST_5[0]}" + f"Encrypted: {TEST_5[1]}" )
-message = Decrypt.Decrypt( TEST_5[1] )
-if message.getDecrypted() == TEST_5[2]:
+message = decrypt.decrypt( TEST_5[1] )
+if message.getdecrypted() == TEST_5[2]:
 	print( TEST_OK )
 else:
 	print( TEST_KO )
