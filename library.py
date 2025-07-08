@@ -40,6 +40,9 @@ class Book:
 		self._title = title
 		self._genre = genre
 
+	def getGenre( self ):
+		return (self._genre)
+
 class User:
 	count: int = 0
 
@@ -54,6 +57,9 @@ class User:
 		print( f"I {self.getUsername()} currently have " + \
 				f"{self.getBooksQuantity()} book(s)." )
 
+	def borrowBook( self, book_to_borrow: Book ):
+			self._books.append( book_to_borrow )
+
 	def getBooksQuantity( self ):
 		return ( len( self._books ) )
 
@@ -65,10 +71,23 @@ class Library:
 		self._name = library_name
 		self._books: list[Book] = books
 
+	def tryBorrowBookOfType( self, user: User, genre: str):
+		if user.getBooksQuantity() > MAX_BORROWED_BOOKS_QUANTITY:
+			return
+		for book in self._books:
+			if book.getGenre() == genre:
+				user.borrowBook( book )
+				self._books.remove( book )
+
 # --------------------------------------------------------------------- [ MAIN ]
 
 def main():
 	user1 = User( "Toto", 42 )
+	books: list[Book] = [ Book( "Harry Potter", "Magie" ),\
+					  	Book( "Bible", "Religion" ), \
+						Book( "Bescherelle", "Langue" ) ]
+	library = Library( "Bibliotheque", books )
+	library.tryBorrowBookOfType( user1, "Religion" )
 
 if __name__ == "__main__":
 	main()
