@@ -1,3 +1,4 @@
+
 """
 ● Créer un programme en Python
 	○ Ne pas utiliser de librairie externe
@@ -25,3 +26,49 @@ empruntés
 		■ Dois afficher le nom de la bibliothèque ainsi que la quantité de livres de
 chaque genre de livre encore dans la bibliothèque
 """
+
+# --------------------------------------------------------------- [ CONSTANT.S ]
+
+MAX_BORROWED_BOOKS_QUANTITY	= 3
+
+# ----------------------------------------------------------------- [ CLASS.ES ]
+# https://www.tutorialspoint.com/how-to-count-the-number-of-instances-of-a-class-in-python
+# https://stackoverflow.com/questions/1924469/define-a-list-with-type
+
+class Book:
+	def __init__( self, title, genre ):
+		self._title = title
+		self._genre = genre
+
+class User:
+	count: int = 0
+
+	def __init__( self, username, age ):
+		self._userId: int = User.count
+		User.count += 1
+		self._username: str = username
+		self._age: int = age
+		self._books: list[Book] = [] # Empty Book list.
+
+	def checkHowManyBooks( self ):
+		print( f"I {self.getUsername()} currently have " + \
+				f"{self.getBooksQuantity()} book(s)." )
+
+	def getBooksQuantity( self ):
+		return ( len( self._books ) )
+
+	def getUsername( self ):
+		return ( self._username )
+
+class Library:
+	def __init__( self, library_name, books: list[Book] ):
+		self._name = library_name
+		self._books: list[Book] = books
+
+# --------------------------------------------------------------------- [ MAIN ]
+
+def main():
+	user1 = User( "Toto", 42 )
+
+if __name__ == "__main__":
+	main()
