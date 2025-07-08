@@ -1,32 +1,3 @@
-
-"""
-● Créer un programme en Python
-	○ Ne pas utiliser de librairie externe
-● Créer une classe nommée Book
-	○ Contient un nom de livre (reçu en création)
-	○ Contient un genre de livre (reçu en création)
-● Créer une classe nommée User
-	○ Contient un nom d'utilisateur (reçu en création)
-	○ Contient un âge d'utilisateur (reçu en création)
-	○ Contient un userId
-	○ Contient une liste de livre emprunté (vide par défaut)
-	○ Fonction: checkHowManyBooks
-		■ Dois afficher le nom de l'utilisateur, ainsi que le nombre de livres
-empruntés
-	○ NOTE: Ne peut pas emprunter plus de 3 livres en même temps
-● Créer une classe nommée Library
-	○ Contient un nom de bibliotheque (reçu en création)
-	○ Contient une liste de livre (reçu en création)
-	○ Fonction: tryBorrowBookOfType
-		■ Paramètre #1 User
-		■ Paramètre #2 str (Genre du livre)
-		■ Va vérifier s'il y a un livre du genre disponible et le donner à l'utilisateur
-(s'il peut emprunter le livre)
-	○ Function: checkAllBookByGenre
-		■ Dois afficher le nom de la bibliothèque ainsi que la quantité de livres de
-chaque genre de livre encore dans la bibliothèque
-"""
-
 # --------------------------------------------------------------- [ CONSTANT.S ]
 
 MAX_BORROWED_BOOKS_QUANTITY	= 3
@@ -72,12 +43,41 @@ class Library:
 		self._books: list[Book] = books
 
 	def tryBorrowBookOfType( self, user: User, genre: str):
-		if user.getBooksQuantity() > MAX_BORROWED_BOOKS_QUANTITY:
+		if user.getBooksQuantity() >= MAX_BORROWED_BOOKS_QUANTITY:
 			return
 		for book in self._books:
 			if book.getGenre() == genre:
 				user.borrowBook( book )
 				self._books.remove( book )
+				break
+
+	def checkAllBookByGenre( self ):
+		genres: list[str] = self.getGenres()
+		for genre in genres:
+			count = 0
+			for book in self._books:
+				if book.getGenre() == genre:
+					count += 1
+			print( f"The {self.getName()} library currently have " + \
+		 			f"{count} book(s) of genre {genre}" )
+
+	def getGenres( self ) -> list[str]:
+		genres: list[str] = [] # List of different genres in the library
+		for book in self._books: # iterates through all the library's books
+			genre_tmp = book.getGenre() # genre of the current book
+			if len( genres ) == 0:
+				genres.append( genre_tmp )
+			else:
+				is_monitored = False
+				for genre in genres:
+					if genre == genre_tmp:
+						is_monitored = True
+				if is_monitored == False:
+					genres.append( genre_tmp )
+		return ( genres )
+
+	def getName( self ):
+		return self._name
 
 # --------------------------------------------------------------------- [ MAIN ]
 
@@ -85,9 +85,14 @@ def main():
 	user1 = User( "Toto", 42 )
 	books: list[Book] = [ Book( "Harry Potter", "Magie" ),\
 					  	Book( "Bible", "Religion" ), \
-						Book( "Bescherelle", "Langue" ) ]
+						Book( "Bescherelle", "Langue" ), \
+						Book( "Larousse", "Dictionnaire" ), \
+						Book( "Persy Jackson", "Magie" ), \
+						Book( "Internaute", "Dictionnaire" ) ]
 	library = Library( "Bibliotheque", books )
-	library.tryBorrowBookOfType( user1, "Religion" )
+	library.checkAllBookByGenre()
+	library.tryBorrowBookOfType( user1, "Magie" )
+	library.checkAllBookByGenre()
 
 if __name__ == "__main__":
 	main()
