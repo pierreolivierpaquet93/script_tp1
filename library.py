@@ -14,6 +14,9 @@ class Book:
 	def getGenre( self ):
 		return (self._genre)
 
+	def getTitle( self ):
+		return (self._title)
+
 class User:
 	count: int = 0
 
@@ -36,6 +39,18 @@ class User:
 
 	def getUsername( self ):
 		return ( self._username )
+
+	def returnBooks( self, library_books: list[Book], titles:list[str] = None ):
+		if titles == None: # Return all books
+			for book in self._books:
+				library_books.append( book )
+			self._books.clear() # Removes all the book from the list.
+		else:
+			for title in titles:
+				for book in self._books:
+					if book.getTitle() == title:
+						self._books.remove( book )
+						break
 
 class Library:
 	def __init__( self, library_name, books: list[Book] ):
@@ -79,19 +94,61 @@ class Library:
 	def getName( self ):
 		return self._name
 
+	def returnAllBook( self, user:User ):
+		user.returnBooks( self._books, None )
+
 # --------------------------------------------------------------------- [ MAIN ]
 
 def main():
-	user1 = User( "Toto", 42 )
-	books: list[Book] = [ Book( "Harry Potter", "Magie" ),\
-					  	Book( "Bible", "Religion" ), \
-						Book( "Bescherelle", "Langue" ), \
-						Book( "Larousse", "Dictionnaire" ), \
-						Book( "Persy Jackson", "Magie" ), \
-						Book( "Internaute", "Dictionnaire" ) ]
-	library = Library( "Bibliotheque", books )
+	books = [
+		Book("To Kill a Mockingbird", "Fiction"),Book("1984", "Dystopian"),
+		Book("The Great Gatsby", "Fiction"),
+		Book("Harry Potter and the Sorcerer's Stone", "Fantasy"),
+		Book("The Hobbit", "Fantasy"),
+		Book("Pride and Prejudice", "Romance"),
+		Book("The Catcher in the Rye", "Fiction"),
+		Book("The Lord of the Rings", "Fantasy"),
+		Book("Brave New World", "Dystopian"),
+		Book("Jane Eyre", "Romance"),
+		Book("Fahrenheit 451", "Dystopian"),
+		Book("The Chronicles of Narnia", "Fantasy"),
+		Book("Moby Dick", "Fiction"),
+		Book("Wuthering Heights", "Romance"),
+		Book("The Da Vinci Code", "Thriller"),
+		Book("The Girl with the Dragon Tattoo", "Thriller"),
+		Book("Gone Girl", "Thriller"),
+		Book("The Hunger Games", "Dystopian"),
+		]
+
+	library = Library("Limoilou", books)
+
+	jacob = User("Jacob", 18)
+	martine = User("Martine", 26)
+	richard = User("Richard", 42)
+
+	library.tryBorrowBookOfType(jacob, "Fantasy")
+	library.tryBorrowBookOfType(jacob, "Fantasy")
+	library.tryBorrowBookOfType(jacob, "Fantasy")
+	library.tryBorrowBookOfType(jacob, "Fantasy")
+	library.tryBorrowBookOfType(richard, "Fantasy")
+	library.tryBorrowBookOfType(richard, "Fantasy")
+	library.tryBorrowBookOfType(richard, "Romance")
+	library.tryBorrowBookOfType(martine, "Dystopian")
+	library.tryBorrowBookOfType(martine, "Dystopian")
+	library.tryBorrowBookOfType(martine, "Dystopian")
+
+	jacob.checkHowManyBooks()
+	martine.checkHowManyBooks()
+	richard.checkHowManyBooks()
 	library.checkAllBookByGenre()
-	library.tryBorrowBookOfType( user1, "Magie" )
+
+	#Custom test
+	jacob.returnBooks( library._books, ["Harry Potter and the Sorcerer's Stone","The Lord of the Rings" , "The Hobbit"] )
+
+	library.returnAllBook(jacob)
+	jacob.checkHowManyBooks()
+	martine.checkHowManyBooks()
+	richard.checkHowManyBooks()
 	library.checkAllBookByGenre()
 
 if __name__ == "__main__":
