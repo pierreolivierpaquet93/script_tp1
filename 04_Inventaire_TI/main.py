@@ -4,7 +4,8 @@
 from Data import	User, \
 					Computer, \
 					Screen, \
-					Keyboard
+					Keyboard, \
+					Mouse
 
 # --------------------------------------------------------------------- [ MAIN ]
 
@@ -14,8 +15,10 @@ def main():
 	ecran = Screen( "Nom::ecran", 280, utilisateur, 16, True )
 	print( type( ecran ) )
 
-	clavier = Keyboard( True, False, (666000, "Evil MegaBoard") )
-	clavier2 = Keyboard( False, True, Keyboard.types[100] )
+	clavier2 = Keyboard( "Keycron", 250, utilisateur, False, True, Keyboard.types[100] )
+
+	riz = User( "Rizuto Bazmatii" )
+	souris = Mouse( "Nom::Souris", 150, riz, False, 6 )
 
 	return ( 0 )
 
