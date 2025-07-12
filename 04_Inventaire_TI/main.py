@@ -37,8 +37,10 @@ def main():
 
 	print( type( Screen ).__name__ )
 
-	item3 = inventaire.search_by_monitor( 16, True )
+	item3 = inventaire.search_by_monitor( 17, True )
+	item4 = inventaire.search_by_keyboard_info( True, False )
 
+	item5 = inventaire.search_by_keyboard_type( "100%" )
 
 	return ( 0 )
 

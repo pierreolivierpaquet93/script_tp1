@@ -199,6 +199,15 @@ class Keyboard( Product ):
 		self._mechanical: bool = mechanical
 		self._type = type
 
+	def getWireless( self ):
+		return ( self._wireless )
+
+	def getMechanical( self ):
+		return ( self._mechanical )
+
+	def getType( self ):
+		return ( str( self._type[0] ) + '%' )
+
 class Mouse( Product ):
 	"""
 	Parent
@@ -270,12 +279,14 @@ class Inventory:
 			for product in product_type:
 				if product.getName() == product_name:
 					return ( product )
+		return ( None )
 
 	def search_by_price( self, product_price: int ):
 		for product_type in self._stock:
 			for product in product_type:
 				if product.getPrice() == product_price:
 					return ( product )
+		return ( None )
 
 	def search_by_monitor( self, size: int, hdmi: bool ):
 		screen_tmp = Screen( "",0,0, False,None,False )
@@ -286,12 +297,28 @@ class Inventory:
 					if product.getSize() == size \
 					and product.getHdmiPort() == hdmi:
 						return ( product )
+		return ( None )
 
 	def search_by_keyboard_info( self, wireless: bool, mechanical: bool  ):
-		keyboard_tmp = Keyboard( "", )
+		keyboard_tmp = Keyboard( "", 0, False, False, ("",""),None,False)
+		for product_type in self._stock:
+			if type( product_type[0] ).__name__ == \
+				type( keyboard_tmp ).__name__:
+				for product in product_type:
+					if product.getWireless() == wireless \
+					and product.getMechanical() == mechanical:
+						return ( product )
+		return ( None )
 
-	def search_by_keyboard_type( self, type: str ):
-		pass
+	def search_by_keyboard_type( self, keyboard_type: str ):
+		keyboard_tmp = Keyboard( "", 0, False, False, ("",""),None,False)
+		for product_type in self._stock:
+			if type( product_type[0] ).__name__ == \
+				type( keyboard_tmp ).__name__:
+					for product in product_type:
+						if product.getType() == keyboard_type:
+							return ( product )
+		return ( None )
 
 	def search_by_mouse( self ):
 		pass
