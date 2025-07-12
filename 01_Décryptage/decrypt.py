@@ -75,7 +75,7 @@ class Decrypt:
 
 	def _checkTargetChar( self, char ):
 		"""
-			:param str char: 
+			:param str char:
 			:return: The index from CHAR_TARGETS where [char] was found. \
 			Returns -1 if [char] was not found.
 		"""

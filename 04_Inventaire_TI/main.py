@@ -5,20 +5,34 @@ from Data import	User, \
 					Computer, \
 					Screen, \
 					Keyboard, \
-					Mouse
+					Mouse, \
+					Inventory
 
 # --------------------------------------------------------------------- [ MAIN ]
 
 def main():
-	utilisateur = User( "Diego l'Ortho" )
-	ordinateur = Computer( "Nom::Ordinateur", 690, utilisateur, 2024, "Caliss", "Tabarnack", 4, 512 )
-	ecran = Screen( "Nom::ecran", 280, utilisateur, 16, True )
-	print( type( ecran ) )
+	utilisateur = User( "NotSoRandom UserName" )
+	ordinateur = Computer( "nom::ordinateur", 690, utilisateur, 2024, "CPU", "GPU", 4, 512 )
+	ecran = Screen( "nom::ecran", 280, utilisateur, 16, True )
 
-	clavier2 = Keyboard( "Keycron", 250, utilisateur, False, True, Keyboard.types["100%"] )
+	clavier = Keyboard( "nom::clavier", 100, utilisateur, False, False, Keyboard.types["60%"] )
+	clavier2 = Keyboard( "nom::clavier2", 250, utilisateur, False, True, Keyboard.types["100%"] )
 
-	riz = User( "Rizuto Bazmatii" )
-	souris = Mouse( "Nom::Souris", 150, riz, False, 6 )
+	riz = User( "Original Name" )
+
+	souris = Mouse( "nom::souris", 150, riz, False, 6 )
+	souris2 = Mouse( "nom::souris2", 160, utilisateur, False, 8 )
+
+	inventaire = Inventory()
+	inventaire.add_product( souris )
+	inventaire.add_product( souris2 )
+	inventaire.add_product( clavier2 )
+	inventaire.add_product( ordinateur )
+
+	inventaire.add_product( clavier )
+
+	item = inventaire.search_by_name( "nom::souris2" )
+	item2 = inventaire.search_by_name( "nom::clavier" )
 
 	return ( 0 )
 
