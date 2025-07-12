@@ -21,18 +21,19 @@ def main():
 	riz = User( "Original Name" )
 
 	souris = Mouse( "nom::souris", 150, riz, False, 6 )
-	souris2 = Mouse( "nom::souris2", 160, utilisateur, False, 8 )
+	souris2 = Mouse( "nom::souris2", 73, utilisateur, False, 8 )
 
 	inventaire = Inventory()
 	inventaire.add_product( souris )
 	inventaire.add_product( souris2 )
+	inventaire.add_product( ecran )
 	inventaire.add_product( clavier2 )
 	inventaire.add_product( ordinateur )
 
 	inventaire.add_product( clavier )
 
 	item = inventaire.search_by_name( "nom::souris2" )
-	item2 = inventaire.search_by_name( "nom::clavier" )
+	item2 = inventaire.search_by_price( 73 )
 
 	return ( 0 )
 

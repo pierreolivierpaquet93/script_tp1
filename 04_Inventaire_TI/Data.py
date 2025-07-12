@@ -40,7 +40,7 @@ class Product:
 	Instance variable.s
 	.
 	- _name -> Product's name.
-	- _value -> Product's value ($).
+	- _value -> Product's price/value ($).
 	- _owner -> User who owns the Product.
 	- _productId -> Product.__id when instance was constructed.
 	- _available -> True by default; Product is available to User.
@@ -63,6 +63,9 @@ class Product:
 
 	def getName( self ):
 		return ( self._name )
+
+	def getPrice( self ):
+		return ( self._value )
 
 class Computer( Product ):
 	"""
@@ -240,17 +243,20 @@ class Inventory:
 		"""
 		pass
 
+	def give_to( self, products: list[Product], recipient: User ):
+		pass
+
 	def search_by_name( self, product_name: str ):
 		for product_type in self._stock:
 			for product in product_type:
 				if product.getName() == product_name:
 					return ( product )
 
-	def give_to( self, products: list[Product], recipient: User ):
-		pass
-
 	def search_by_price( self, product_price: int ):
-		pass
+		for product_type in self._stock:
+			for product in product_type:
+				if product.getPrice() == product_price:
+					return ( product )
 
 	def search_by_monitor( self ):
 		pass
