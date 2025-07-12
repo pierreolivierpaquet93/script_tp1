@@ -1,10 +1,5 @@
 # https://docs.python.org/3/library/stdtypes.html
 
-# --------------------------------------------------------------- [ CONSTANT.S ]
-
-IS_AVAILABLE = True
-NOT_AVAILABLE = False
-
 # ----------------------------------------------------------------- [ CLASS.ES ]
 
 class User:
@@ -41,9 +36,8 @@ class Product:
 	.
 	- _name -> Product's name.
 	- _value -> Product's price/value ($).
-	- _owner -> User who owns the Product.
+	- _owner -> User who owns the Product. None by default.
 	- _productId -> Product.__id when instance was constructed.
-	- _available -> True by default; Product is available to User.
 	"""
 	__id: int = 0
 
@@ -53,13 +47,12 @@ class Product:
 	def __init__(	self, \
 			  		name: str, \
 					value: int, \
-					user: User ):
+					user: User = None ):
 		Product.__id += 1
 		self._name:str = name
 		self._value: int = value
 		self._owner: User = user
 		self._productId = Product.__id
-		self._available = IS_AVAILABLE
 
 	def getName( self ):
 		return ( self._name )
@@ -94,14 +87,14 @@ class Computer( Product ):
 	def __init__(	self, \
 			  	product_name: str, \
 				product_value: int, \
-				product_owner: User, \
+				#product_owner: User, \
 					year: int, \
 					cpu_type: str, \
 					gpu_type: str, \
 					ram_gb: int, \
 					hd_gb: int ):
 		Computer.__id += 1
-		super().__init__( product_name, product_value, product_owner )
+		super().__init__( product_name, product_value )
 		self._year: int = year
 		self._cpu_type: str = cpu_type
 		self._gpu_type: str = gpu_type
@@ -133,14 +126,20 @@ class Screen( Product ):
 	def __init__(	self, \
 				product_name: str, \
 				product_value: int, \
-				product_owner: User, \
+				#product_owner: User, \
 			  		display_size: int, \
 					hdmi_port: bool ):
 		Screen.__id += 1
-		super().__init__( product_name, product_value, product_owner )
+		super().__init__( product_name, product_value )
 		self._display_size_in: int = display_size
 		self._hdmi_port: bool = hdmi_port
 		self._id = Screen.__id
+
+	def getSize( self ):
+		return ( self._display_size_in )
+
+	def getHdmiPort( self ):
+		return ( self._hdmi_port )
 
 class Keyboard( Product ):
 	"""
@@ -173,12 +172,12 @@ class Keyboard( Product ):
 	def __init__(	self, \
 				product_name: str, \
 				product_value: int, \
-				product_owner: User, \
+				#product_owner: User, \
 			  		wireless: bool, \
 					mechanical: bool, \
 					type: tuple[str,str] ):
 		Keyboard.__id += 1
-		super().__init__( product_name, product_value, product_owner )
+		super().__init__( product_name, product_value )
 		self._wireless: bool = wireless
 		self._mechanical: bool = mechanical
 		self._type = type
@@ -208,11 +207,11 @@ class Mouse( Product ):
 	def __init__(	self,
 				product_name: str, \
 				product_value: int, \
-				product_owner: User, \
+				#product_owner: User, \
 					wireless: bool, \
 					button_amount: int ):
 		Mouse.__id += 1
-		super().__init__( product_name, product_value, product_owner )
+		super().__init__( product_name, product_value )
 		self._wireless: bool = wireless
 		self._button_amount: int = button_amount
 		self._id = Mouse.__id
@@ -258,8 +257,14 @@ class Inventory:
 				if product.getPrice() == product_price:
 					return ( product )
 
-	def search_by_monitor( self ):
-		pass
+	def search_by_monitor( self, size: int, hdmi: bool ):
+		for product_type in self._stock:
+			if type( product_type[0] ).__name__ == \
+				type( Screen ).__name__:
+				for product in product_type:
+					if product.getSize() == size \
+					and product.getHdmiPort() == hdmi:
+						return ( product )
 
 	def search_by_keyboard_info( self, wireless: bool, mechanical: bool  ):
 		pass
