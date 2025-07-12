@@ -245,6 +245,12 @@ class Mouse( Product ):
 		self._wireless: bool = wireless
 		self._button_amount: int = button_amount
 
+	def getWireless( self ):
+		return ( self._wireless )
+
+	def getButtonAmount( self ):
+		return ( self._button_amount )
+
 class Inventory:
 	"""
 	Instance variable.s
@@ -320,6 +326,14 @@ class Inventory:
 							return ( product )
 		return ( None )
 
-	def search_by_mouse( self ):
-		pass
+	def search_by_mouse( self, wireless: bool, button_amount: int ):
+		mouse_tmp = Mouse( "", 0, False, 0, None, False )
+		for product_type in self._stock:
+			if type( product_type[0] ).__name__ == \
+				type( mouse_tmp ).__name__:
+					for product in product_type:
+						if product.getWireless() == wireless \
+						and product.getButtonAmount() == button_amount:
+							return ( product )
+		return ( None )
 

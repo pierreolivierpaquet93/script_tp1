@@ -42,6 +42,8 @@ def main():
 
 	item5 = inventaire.search_by_keyboard_type( "100%" )
 
+	item6 = inventaire.search_by_mouse( False, 8 )
+
 	return ( 0 )
 
 if __name__ == "__main__":
