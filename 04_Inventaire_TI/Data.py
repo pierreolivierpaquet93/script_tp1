@@ -14,7 +14,7 @@ class Product:
 					value: int, \
 					user: User ):
 		self._name:str = name
-		self._value:int = value
+		self._value: int = value
 		self._owner = user
 
 class Computer( Product ):
@@ -33,3 +33,15 @@ class Computer( Product ):
 		self._ram_gb = ram_gb
 		self._hd_gb = hd_gb
 		super().__init__( product_name, product_value, product_user )
+
+class Screen( Product ):
+	def __init__(	self, \
+					product_name: str, \
+					product_value: int, \
+					product_user: User, \
+			  		display_size: int, \
+					hdmi_port: bool ):
+		self._display_size_in: int = display_size
+		self._hdmi_port: bool = hdmi_port
+		super().__init__( product_name, product_value, product_user )
+
