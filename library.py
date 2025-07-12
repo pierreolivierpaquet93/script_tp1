@@ -70,11 +70,14 @@ class Library:
 		genres: list[str] = self.getGenres()
 		for genre in genres:
 			count = 0
+			plurality = "book"
 			for book in self._books:
 				if book.getGenre() == genre:
 					count += 1
+					if count > 1 and plurality == "book":
+						plurality  += "s"
 			print( f"The {self.getName()} library currently have " + \
-		 			f"{count} book(s) of genre {genre}" )
+		 			f"{count} {plurality} of genre {genre}" )
 
 	def getGenres( self ) -> list[str]:
 		genres: list[str] = [] # List of different genres in the library
@@ -96,6 +99,13 @@ class Library:
 
 	def returnAllBook( self, user:User ):
 		user.returnBooks( self._books, None )
+
+# ------------------------------------------------------------------- [ TOOL.S ]
+
+def conjugate( word:str, amount:int ) -> str:
+	if amount > 1 and word[len(word)-1] != 's':
+		return ( word + 's' )
+	return ( word )
 
 # --------------------------------------------------------------------- [ MAIN ]
 
@@ -141,9 +151,6 @@ def main():
 	martine.checkHowManyBooks()
 	richard.checkHowManyBooks()
 	library.checkAllBookByGenre()
-
-	#Custom test
-	jacob.returnBooks( library._books, ["Harry Potter and the Sorcerer's Stone","The Lord of the Rings" , "The Hobbit"] )
 
 	library.returnAllBook(jacob)
 	jacob.checkHowManyBooks()
