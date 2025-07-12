@@ -28,8 +28,9 @@ class User:
 		self._books: list[Book] = [] # Empty Book list.
 
 	def checkHowManyBooks( self ):
+		qt = self.getBooksQuantity()
 		print( f"I {self.getUsername()} currently have " + \
-				f"{self.getBooksQuantity()} book(s)." )
+				f"{qt} {conjugate("book", qt)}." )
 
 	def borrowBook( self, book_to_borrow: Book ):
 			self._books.append( book_to_borrow )
@@ -70,14 +71,11 @@ class Library:
 		genres: list[str] = self.getGenres()
 		for genre in genres:
 			count = 0
-			plurality = "book"
 			for book in self._books:
 				if book.getGenre() == genre:
 					count += 1
-					if count > 1 and plurality == "book":
-						plurality  += "s"
 			print( f"The {self.getName()} library currently have " + \
-		 			f"{count} {plurality} of genre {genre}" )
+		 			f"{count} {conjugate("book", count)} of genre {genre}" )
 
 	def getGenres( self ) -> list[str]:
 		genres: list[str] = [] # List of different genres in the library
