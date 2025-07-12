@@ -45,3 +45,16 @@ class Screen( Product ):
 		self._hdmi_port: bool = hdmi_port
 		super().__init__( product_name, product_value, product_user )
 
+class Keyboard( Product ):
+	types: dict[int:tuple[int,str]] = {	100	: (100, "full-size"), \
+						 				80	: (80, "tenkeyless"), \
+										75	: (75, "compact"), \
+										65	: (65, "small"),
+										60	: (60, "most compact") }
+	def __init__(	self, \
+			  		wireless: bool, \
+					mechanical: bool, \
+					type: tuple[int,str] ):
+		self._wireless = wireless
+		self._mechanical = mechanical
+		self._type = type
