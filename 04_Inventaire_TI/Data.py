@@ -64,6 +64,17 @@ class Product:
 	def getPrice( self ):
 		return ( self._value )
 
+	def getOwner( self ):
+		if self._owner != None:
+			return self._owner.getName()
+		return ( "" )
+
+	def setOwner( self, new_owner: User ):
+		if self._owner == None:
+			self._owner = new_owner
+			return ( new_owner )
+		return ( None )
+
 class Computer( Product ):
 	"""
 	Parent
@@ -278,7 +289,10 @@ class Inventory:
 		pass
 
 	def give_to( self, products: list[Product], recipient: User ):
-		pass
+		for product in products:
+			if product != None:
+				if product.getOwner() == "":
+					product.setOwner( recipient )
 
 	def search_by_name( self, product_name: str ):
 		for product_type in self._stock:
@@ -297,7 +311,7 @@ class Inventory:
 	def search_by_monitor( self, size: int, hdmi: bool ):
 		screen_tmp = Screen( "",0,0, False,None,False )
 		for product_type in self._stock:
-			if type( product_type[0] ).__name__ == \
+			if product_type != None and type( product_type[0] ).__name__ == \
 				type( screen_tmp ).__name__:
 				for product in product_type:
 					if product.getSize() == size \
@@ -307,8 +321,9 @@ class Inventory:
 
 	def search_by_keyboard_info( self, wireless: bool, mechanical: bool  ):
 		keyboard_tmp = Keyboard( "", 0, False, False, ("",""),None,False)
+		self._stock.append( None )#DELETE TEST
 		for product_type in self._stock:
-			if type( product_type[0] ).__name__ == \
+			if product_type != None and type( product_type[0] ).__name__ == \
 				type( keyboard_tmp ).__name__:
 				for product in product_type:
 					if product.getWireless() == wireless \
@@ -319,7 +334,7 @@ class Inventory:
 	def search_by_keyboard_type( self, keyboard_type: str ):
 		keyboard_tmp = Keyboard( "", 0, False, False, ("",""),None,False)
 		for product_type in self._stock:
-			if type( product_type[0] ).__name__ == \
+			if product_type != None and type( product_type[0] ).__name__ == \
 				type( keyboard_tmp ).__name__:
 					for product in product_type:
 						if product.getType() == keyboard_type:
@@ -329,7 +344,7 @@ class Inventory:
 	def search_by_mouse( self, wireless: bool, button_amount: int ):
 		mouse_tmp = Mouse( "", 0, False, 0, None, False )
 		for product_type in self._stock:
-			if type( product_type[0] ).__name__ == \
+			if product_type != None and type( product_type[0] ).__name__ == \
 				type( mouse_tmp ).__name__:
 					for product in product_type:
 						if product.getWireless() == wireless \
@@ -337,3 +352,8 @@ class Inventory:
 							return ( product )
 		return ( None )
 
+	def list_quantity( self ):
+		print( f"Quantity of computer(s) in inventory = {Computer.count()}" )
+		print( f"Quantity of screen(s) in inventory = {Screen.count()}" )
+		print( f"Quantity of keyboard(s) in inventory = {Keyboard.count()}" )
+		print( f"Quantity of mouse(s) in inventory = {Mouse.count()}" )
