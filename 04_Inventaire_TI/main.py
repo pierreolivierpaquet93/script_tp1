@@ -15,7 +15,7 @@ def main():
 	ecran = Screen( "Nom::ecran", 280, utilisateur, 16, True )
 	print( type( ecran ) )
 
-	clavier2 = Keyboard( "Keycron", 250, utilisateur, False, True, Keyboard.types[100] )
+	clavier2 = Keyboard( "Keycron", 250, utilisateur, False, True, Keyboard.types["100%"] )
 
 	riz = User( "Rizuto Bazmatii" )
 	souris = Mouse( "Nom::Souris", 150, riz, False, 6 )
