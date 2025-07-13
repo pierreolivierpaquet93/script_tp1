@@ -1,7 +1,7 @@
 
 # ----------------------------------------------------------------- [ MODULE.S ]
 
-from Data import	User,		\
+from data import	User,		\
 					Computer,	\
 					Screen,		\
 					Keyboard,	\
@@ -12,8 +12,7 @@ from Data import	User,		\
 # --------------------------------------------------------------------- [ MAIN ]
 
 def main():
-
-############# Products ############
+	############# Products ############
 
 	inventory = Inventory()
 	inventory.add_product(Computer("Lenovo i5", 2024, "i5-14400", "", 16, 512 ,  1100))
@@ -33,12 +32,12 @@ def main():
 	inventory.add_product(Mouse("Dell - MS116", False, 3, 22))
 	inventory.add_product(Mouse("Logitech G502 Hero", False, 11, 55))
 
-############ Users ############
+	############ Users ############
 
 	Karine = User("Karine")
 	Bertrand = User("Bertrand")
 
-############ Operations ############
+	############ Operations ############
 
 	print("\n--- All Inventory ---")
 	inventory.list_inventory()
@@ -71,7 +70,6 @@ def main():
 
 	print("\n--- Inventory of Karine ---")
 	inventory.list_inventory_of_user(Karine)
-
 	return ( 0 )
 
 if __name__ == "__main__":
