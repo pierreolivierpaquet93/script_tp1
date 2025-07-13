@@ -1,12 +1,13 @@
 
 # ----------------------------------------------------------------- [ MODULE.S ]
 
-from Data import	User, \
-					Computer, \
-					Screen, \
-					Keyboard, \
-					Mouse, \
-					Inventory
+from Data import	User,		\
+					Computer,	\
+					Screen,		\
+					Keyboard,	\
+					Mouse,		\
+					Inventory,	\
+					Product
 
 # --------------------------------------------------------------------- [ MAIN ]
 
@@ -42,7 +43,28 @@ def main():
 	print("\n--- All Inventory ---")
 	inventory.list_inventory()
 
-	print( Computer.__name__ )
+	print("\n--- Giving to Karine  ---")
+	item1 = inventory.search_by_name("Dell OptiPlex")
+	item2 = inventory.search_by_price(105)
+	item3 = inventory.search_keyboard_info(True, False)
+	item4 = inventory.search_mouse(True, 3)
+	item5 = inventory.search_by_name("The answer to life the universe and everything")
+	inventory.give_to([item1, item2, item3, item4, item5, Product("Fake Product", 9999)], Karine)
+
+	print("\n--- Giving to Bertrand ---")
+	item_a = inventory.search_by_price(69)
+	item_b = inventory.search_computer(32, 1000)
+	item_c = inventory.search_monitor(27, True)
+	item_d = inventory.search_by_name("Dell OptiPlex")
+	item_e = inventory.search_keyboard_type("100%")
+	item_f = inventory.search_mouse(False, 11)
+	inventory.give_to([item_a, item_b, item_c, item_d, item_e, item_f], Bertrand)
+
+	print("\n--- All Inventory After Giving ---")
+	inventory.list_inventory()
+
+	print("\n--- Quantity---")
+	inventory.list_quantity()
 
 	return ( 0 )
 

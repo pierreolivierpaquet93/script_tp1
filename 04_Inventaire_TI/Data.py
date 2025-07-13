@@ -1,4 +1,7 @@
 # https://docs.python.org/3/library/stdtypes.html
+# https://stackoverflow.com/questions/510972/getting-the-class-name-of-an-instance
+
+# https://text-compare.com/
 
 # --------------------------------------------------------------- [ CONSTANT.S ]
 
@@ -51,8 +54,8 @@ class Product:
 	def __init__(	self, \
 			  		name: str, \
 					value: int, \
-					user: User, \
-					track: bool):
+					user: User = None, \
+					track: bool = True):
 		if track == True:
 			Product.__id += 1
 			self._productId = Product.__id
@@ -322,7 +325,7 @@ class Inventory:
 		output = ""
 		output += "wireless=[" + str( keyboard.getWireless() ) + "] "
 		output += "mechanical=[" + str( keyboard.getMechanical() ) + "] "
-		output += "size_type=[" + keyboard.getType() + "] "
+		output += "size_type=[" + keyboard.getType() + "]"
 		return ( output )
 
 	def __list_inventory_mouse( self, mouse: Mouse ):
@@ -331,12 +334,12 @@ class Inventory:
 		output += "buttons=[" + str( mouse.getButtonAmount() ) + "]"
 		return ( output )
 
-	def list_inventory( self ):
+	def list_inventory( self, user: User = None ):
 		funcs = {	type( Computer( "",0,"","",0,0,0,None,0 ) ).__name__: \
 		   				self.__list_inventory_computer,
 		  			type( Screen( "",0,0,0,None,0 ) ).__name__ : \
 						self.__list_inventory_screen,
-					type( Keyboard("",0,0,"",None, None, 0) ).__name__ : \
+					type( Keyboard( "",0,0,"",0,None,0 ) ).__name__ : \
 						self.__list_inventory_keyboard,
 					type( Mouse("",0,0,0,None,0) ).__name__ : \
 						self.__list_inventory_mouse }
@@ -352,8 +355,13 @@ class Inventory:
 				output += f"owner=[" + owner + "] "
 				product_function = funcs[ type( product ).__name__ ]
 				output += product_function( product )
-				print( output )
+				if user == None:
+					print( output )
+				elif ( product.getOwner() == user.getName() ):
+					print( output )
 
+	def list_inventory_of_user( self, user: User ):
+		self.list_inventory( user )
 
 	def give_to( self, products: list[Product], recipient: User ):
 		for product in products:
@@ -375,7 +383,7 @@ class Inventory:
 					return ( product )
 		return ( None )
 
-	def search_by_monitor( self, size: int, hdmi: bool ):
+	def search_monitor( self, size: int, hdmi: bool ):
 		screen_tmp = Screen( "",0,0, False,None,False )
 		for product_type in self._stock:
 			if product_type != None and type( product_type[0] ).__name__ == \
@@ -386,8 +394,8 @@ class Inventory:
 						return ( product )
 		return ( None )
 
-	def search_by_keyboard_info( self, wireless: bool, mechanical: bool  ):
-		keyboard_tmp = Keyboard( "", 0, False, False, ("",""),None,False)
+	def search_keyboard_info( self, wireless: bool, mechanical: bool  ):
+		keyboard_tmp = Keyboard( "",0,0,"",0,None,0 )
 		for product_type in self._stock:
 			if product_type != None and type( product_type[0] ).__name__ == \
 				type( keyboard_tmp ).__name__:
@@ -397,8 +405,8 @@ class Inventory:
 						return ( product )
 		return ( None )
 
-	def search_by_keyboard_type( self, keyboard_type: str ):
-		keyboard_tmp = Keyboard( "", 0, False, False, ("",""),None,False)
+	def search_keyboard_type( self, keyboard_type: str ):
+		keyboard_tmp = Keyboard( "",0,0,"",0,None,0 )
 		for product_type in self._stock:
 			if product_type != None and type( product_type[0] ).__name__ == \
 				type( keyboard_tmp ).__name__:
@@ -407,7 +415,7 @@ class Inventory:
 							return ( product )
 		return ( None )
 
-	def search_by_mouse( self, wireless: bool, button_amount: int ):
+	def search_mouse( self, wireless: bool, button_amount: int ):
 		mouse_tmp = Mouse( "", 0, False, 0, None, False )
 		for product_type in self._stock:
 			if product_type != None and type( product_type[0] ).__name__ == \
@@ -418,9 +426,19 @@ class Inventory:
 							return ( product )
 		return ( None )
 
+	def search_computer( self, ram: int, hard_disk: int  ):
+		computer_tmp = Computer( "",0,"","",0,0,0,None,0 )
+		for product_type in self._stock:
+			if product_type != None and type( product_type[0] ).__name__ == \
+			type( computer_tmp ).__name__:
+				for computer in product_type:
+					if computer.getRam() == ram \
+					and computer.getHardDisk() == hard_disk:
+						return ( computer )
+		return ( None )
+
 	def list_quantity( self ):
 		print( f"Quantity of computer(s) in inventory = {Computer.count()}" )
 		print( f"Quantity of screen(s) in inventory = {Screen.count()}" )
 		print( f"Quantity of keyboard(s) in inventory = {Keyboard.count()}" )
 		print( f"Quantity of mouse(s) in inventory = {Mouse.count()}" )
-
