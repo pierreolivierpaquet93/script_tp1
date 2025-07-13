@@ -66,6 +66,12 @@ def main():
 	print("\n--- Quantity---")
 	inventory.list_quantity()
 
+	print("\n--- Values ---")
+	inventory.list_values()
+
+	print("\n--- Inventory of Karine ---")
+	inventory.list_inventory_of_user(Karine)
+
 	return ( 0 )
 
 if __name__ == "__main__":

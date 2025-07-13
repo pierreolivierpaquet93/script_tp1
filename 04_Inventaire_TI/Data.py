@@ -82,6 +82,9 @@ class Product:
 			return ( new_owner )
 		return ( None )
 
+	def getId( self ) -> int:
+		return ( self._productId )
+
 class Computer( Product ):
 	"""
 	Parent
@@ -363,17 +366,54 @@ class Inventory:
 	def list_inventory_of_user( self, user: User ):
 		self.list_inventory( user )
 
+	def list_values( self ):
+		total = 0
+		for product_type in self._stock:
+			total_value = 0
+			if product_type != None:
+				plural = ""
+				if len( product_type ) > 1:
+					plural = 's'
+				type_tmp = type( product_type[0] ).__name__
+				type_tmp = type_tmp.lower()
+				for item in product_type:
+					total_value += item.getPrice()
+				print(	f"Value of {type_tmp}{plural} in inventory = " + \
+		  				f"{total_value} $" )
+				total += total_value
+		print( f"Total value = {total} $" )
+
+	def __locate_item( self, item_to_locate: Product ) -> bool:
+		for product_type in self._stock:
+			if product_type != None and type( item_to_locate ).__name__ == \
+			type( product_type[0] ).__name__:
+				for item in product_type:
+					if item.getId() == item_to_locate.getId():
+						return ( True ) # item_to_locate is in the inventory.
+		print(	f"give_to :: invalid :: product " + \
+				f"' {item_to_locate.getName()} ' is not in inventory, Skipped" )
+		return ( False ) # item_to_locate was not found in the inventory.
+
 	def give_to( self, products: list[Product], recipient: User ):
 		for product in products:
 			if product != None:
-				if product.getOwner() == "":
-					product.setOwner( recipient )
+				if self.__locate_item( product ) == True:
+					if product.getOwner() == "":
+						product.setOwner( recipient )
+					else:
+						print(	f"give_to :: invalid :: product already " + \
+								f"assigned to someone else " + \
+								f"' {product.getName()} ', Skipped" )
+			else:
+				print( "give_to :: invalid :: product is None, Skipped" )
 
 	def search_by_name( self, product_name: str ):
 		for product_type in self._stock:
 			for product in product_type:
 				if product.getName() == product_name:
 					return ( product )
+		print(	f"search_by_name :: no result found for name " + \
+				f"' {product_name} '" )
 		return ( None )
 
 	def search_by_price( self, product_price: int ):
@@ -381,6 +421,8 @@ class Inventory:
 			for product in product_type:
 				if product.getPrice() == product_price:
 					return ( product )
+		print(	f"search_by_price :: no result found for price " + \
+				f"{product_price}" )
 		return ( None )
 
 	def search_monitor( self, size: int, hdmi: bool ):
@@ -392,6 +434,8 @@ class Inventory:
 					if product.getSize() == size \
 					and product.getHdmiPort() == hdmi:
 						return ( product )
+		print(	f"search_monitor :: no result found for size ' {size} ' " + \
+				f"and hdmi ' {hdmi} '" )
 		return ( None )
 
 	def search_keyboard_info( self, wireless: bool, mechanical: bool  ):
@@ -403,6 +447,8 @@ class Inventory:
 					if product.getWireless() == wireless \
 					and product.getMechanical() == mechanical:
 						return ( product )
+		print(	f"search_keyboard_info :: no result found for wireless " + \
+				f"' {wireless} ' and mechanical ' {mechanical} '" )
 		return ( None )
 
 	def search_keyboard_type( self, keyboard_type: str ):
@@ -413,6 +459,8 @@ class Inventory:
 					for product in product_type:
 						if product.getType() == keyboard_type:
 							return ( product )
+		print(	f"search_keyboard_type :: no result found for type " + \
+				f"' {keyboard_type} '" )
 		return ( None )
 
 	def search_mouse( self, wireless: bool, button_amount: int ):
@@ -424,6 +472,8 @@ class Inventory:
 						if product.getWireless() == wireless \
 						and product.getButtonAmount() == button_amount:
 							return ( product )
+		print(	f"search_mouse :: no result found for wireless " + \
+				f"' {wireless} ' and button(s) ' {button_amount} '" )
 		return ( None )
 
 	def search_computer( self, ram: int, hard_disk: int  ):
@@ -435,10 +485,26 @@ class Inventory:
 					if computer.getRam() == ram \
 					and computer.getHardDisk() == hard_disk:
 						return ( computer )
+		print(	f"search_computer :: no result found for memory size " + \
+				f"' {ram} ' and disk space ' {hard_disk} '" )
 		return ( None )
 
 	def list_quantity( self ):
-		print( f"Quantity of computer(s) in inventory = {Computer.count()}" )
-		print( f"Quantity of screen(s) in inventory = {Screen.count()}" )
-		print( f"Quantity of keyboard(s) in inventory = {Keyboard.count()}" )
-		print( f"Quantity of mouse(s) in inventory = {Mouse.count()}" )
+		count = Computer.count()
+		print(	f"Quantity of computer{Inventory.__plural_tool(count)} " + \
+				f"in inventory = {count}" )
+		count = Screen.count()
+		print(	f"Quantity of screen{Inventory.__plural_tool(count)} " + \
+				f"in inventory = {count}" )
+		count = Keyboard.count()
+		print(	f"Quantity of keyboard{Inventory.__plural_tool(count)} " + \
+				f"in inventory = {count}" )
+		count = Mouse.count()
+		print(	f"Quantity of mouse{Inventory.__plural_tool(count)} " + \
+				f"in inventory = {count}" )
+
+	def __plural_tool( qt: int ) -> str:
+		if qt > 1:
+			return ( 's' )
+		else:
+			return ( '' )
