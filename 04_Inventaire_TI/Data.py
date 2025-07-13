@@ -1,5 +1,9 @@
 # https://docs.python.org/3/library/stdtypes.html
 
+# --------------------------------------------------------------- [ CONSTANT.S ]
+
+SEP	= " - "
+
 # ----------------------------------------------------------------- [ CLASS.ES ]
 
 class User:
@@ -101,12 +105,12 @@ class Computer( Product ):
 
 	def __init__(	self, \
 			  	product_name: str, \
-				product_value: int, \
 					year: int, \
 					cpu_type: str, \
 					gpu_type: str, \
 					ram_gb: int, \
 					hd_gb: int,
+				product_value: int, \
 				product_owner: User = None, \
 					track: bool = True):
 		if track == True:
@@ -120,6 +124,21 @@ class Computer( Product ):
 		self._gpu_type: str = gpu_type
 		self._ram_gb: int = ram_gb
 		self._hd_gb: int = hd_gb
+
+	def getYear( self ):
+		return ( self._year )
+
+	def getCpu( self ):
+		return ( self._cpu_type )
+
+	def getGpu( self ):
+		return ( self._gpu_type )
+
+	def getRam( self ):
+		return ( self._ram_gb )
+
+	def getHardDisk( self ):
+		return ( self._hd_gb )
 
 class Screen( Product ):
 	"""
@@ -144,9 +163,9 @@ class Screen( Product ):
 
 	def __init__(	self, \
 				product_name: str, \
-				product_value: int, \
 			  		display_size: int, \
 					hdmi_port: bool, \
+				product_value: int, \
 				product_owner: User = None,
 					track: bool = True ):
 		if track == True:
@@ -192,12 +211,13 @@ class Keyboard( Product ):
 											"75%"	: (75, "compact"), \
 											"65%"	: (65, "small"),
 											"60%"	: (60, "most compact") }
+
 	def __init__(	self, \
 				product_name: str, \
-				product_value: int, \
 			  		wireless: bool, \
 					mechanical: bool, \
-					type: tuple[str,str],
+					kb_type: str, \
+				product_value: int, \
 				product_owner: User = None, \
 					track: bool = True ):
 		if track == True:
@@ -208,7 +228,8 @@ class Keyboard( Product ):
 		super().__init__( product_name, product_value, product_owner, track )
 		self._wireless: bool = wireless
 		self._mechanical: bool = mechanical
-		self._type = type
+		if kb_type != "":
+			self._type = Keyboard.types[kb_type]
 
 	def getWireless( self ):
 		return ( self._wireless )
@@ -242,9 +263,9 @@ class Mouse( Product ):
 
 	def __init__(	self,
 				product_name: str, \
-				product_value: int, \
 					wireless: bool, \
 					button_amount: int,
+				product_value: int, \
 				product_owner: User = None, \
 					track: bool = True ):
 		if track == True:
@@ -282,11 +303,57 @@ class Inventory:
 		self._stock.append( new_list )
 		return
 
+	def __list_inventory_computer( self, computer: Computer ) -> str:
+		output = ""
+		output += "year=[" + str( computer.getYear() ) + "] "
+		output += "cpu=[" + computer.getCpu() + "] "
+		output += "gpu=[" + computer.getGpu() + "] "
+		output += "memory_size=[" + str( computer.getRam() ) + "] "
+		output += "disk_space=[" + str( computer.getHardDisk() ) + "]"
+		return ( output )
+
+	def __list_inventory_screen( self, screen: Screen ) -> str:
+		output = ""
+		output += "screen_size=[" + str( screen.getSize() ) + "] "
+		output += "hdmi=[" + str( screen.getHdmiPort() ) + "]"
+		return ( output )
+
+	def __list_inventory_keyboard( self, keyboard: Keyboard ) -> str:
+		output = ""
+		output += "wireless=[" + str( keyboard.getWireless() ) + "] "
+		output += "mechanical=[" + str( keyboard.getMechanical() ) + "] "
+		output += "size_type=[" + keyboard.getType() + "] "
+		return ( output )
+
+	def __list_inventory_mouse( self, mouse: Mouse ):
+		output = ""
+		output += "wireless=[" + str( mouse.getWireless() ) + "] "
+		output += "buttons=[" + str( mouse.getButtonAmount() ) + "]"
+		return ( output )
+
 	def list_inventory( self ):
-		"""
-		Format: [{Type} - {name} - {attribut} - {...}]
-		"""
-		pass
+		funcs = {	type( Computer( "",0,"","",0,0,0,None,0 ) ).__name__: \
+		   				self.__list_inventory_computer,
+		  			type( Screen( "",0,0,0,None,0 ) ).__name__ : \
+						self.__list_inventory_screen,
+					type( Keyboard("",0,0,"",None, None, 0) ).__name__ : \
+						self.__list_inventory_keyboard,
+					type( Mouse("",0,0,0,None,0) ).__name__ : \
+						self.__list_inventory_mouse }
+		for product_type in self._stock:
+			for product in product_type:
+				output: str = ""
+				output += type( product_type[0] ).__name__
+				output += SEP + product.getName() + " "
+				output += "value=[" + str( product.getPrice() ) + "] "
+				owner: str = product.getOwner()
+				if owner == "":
+					owner += " "
+				output += f"owner=[" + owner + "] "
+				product_function = funcs[ type( product ).__name__ ]
+				output += product_function( product )
+				print( output )
+
 
 	def give_to( self, products: list[Product], recipient: User ):
 		for product in products:
@@ -321,7 +388,6 @@ class Inventory:
 
 	def search_by_keyboard_info( self, wireless: bool, mechanical: bool  ):
 		keyboard_tmp = Keyboard( "", 0, False, False, ("",""),None,False)
-		self._stock.append( None )#DELETE TEST
 		for product_type in self._stock:
 			if product_type != None and type( product_type[0] ).__name__ == \
 				type( keyboard_tmp ).__name__:
@@ -357,3 +423,4 @@ class Inventory:
 		print( f"Quantity of screen(s) in inventory = {Screen.count()}" )
 		print( f"Quantity of keyboard(s) in inventory = {Keyboard.count()}" )
 		print( f"Quantity of mouse(s) in inventory = {Mouse.count()}" )
+
