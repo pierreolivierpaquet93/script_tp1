@@ -65,7 +65,7 @@ class Product:
 		"""
 		if track == True:
 			Product.__id += 1
-			self._productId = Product.__id 
+			self._productId = Product.__id
 		else: # Product is constructed for temporary purposes.
 			self._productId = -1
 		self._name: str = name
@@ -371,6 +371,12 @@ class Inventory:
 		return ( output )
 
 	def list_inventory( self, user: User = None ):
+		"""
+		- Creates 'funcs', a list functions uesd to extend the output based on
+		the different Product types.
+		- Builds the main part of Product details output.
+		"""
+		# Ex: funcs = { 'Computer': __list_inventory_computer(), ... }
 		funcs = {	type( Computer( "",0,"","",0,0,0,None,0 ) ).__name__: \
 		   				self.__list_inventory_computer,
 		  			type( Screen( "",0,0,0,None,0 ) ).__name__ : \
@@ -397,9 +403,18 @@ class Inventory:
 					print( output )
 
 	def list_inventory_of_user( self, user: User ):
+		"""
+		Calls for list_inventory() provididing a specific User.
+		"""
 		self.list_inventory( user )
 
 	def list_values( self ):
+		"""
+		- For each type of Product in the main inventory list (self._stock),
+		calculates the totals and displays the information on the standard
+		output.
+		- Also adds them up to calculate the whole inventory total.
+		"""
 		total = 0
 		for product_type in self._stock:
 			total_value = 0
@@ -417,6 +432,10 @@ class Inventory:
 		print( f"Total value = {total} $" )
 
 	def __locate_item( self, item_to_locate: Product ) -> bool:
+		"""
+		Uses the Product identification to validate whether it was previously
+		added to the inventory.
+		"""
 		for product_type in self._stock:
 			if product_type != None and type( item_to_locate ).__name__ == \
 			type( product_type[0] ).__name__:
@@ -428,6 +447,9 @@ class Inventory:
 		return ( False ) # item_to_locate was not found in the inventory.
 
 	def give_to( self, products: list[Product], recipient: User ):
+		"""
+		Used to mark a Product as owned by adding the User to the Product data.
+		"""
 		for product in products:
 			if product != None:
 				if self.__locate_item( product ) == True:
@@ -441,6 +463,9 @@ class Inventory:
 				print( f"give_to{SEP2}invalid{SEP2}product is None, Skipped" )
 
 	def search_by_name( self, product_name: str ):
+		"""
+		Used to retrieve a Product by its name.
+		"""
 		for product_type in self._stock:
 			for product in product_type:
 				if product.getName() == product_name:
@@ -450,6 +475,9 @@ class Inventory:
 		return ( None )
 
 	def search_by_price( self, product_price: int ):
+		"""
+		Used to retrieve a Product by its price.
+		"""
 		for product_type in self._stock:
 			for product in product_type:
 				if product.getPrice() == product_price:
@@ -459,6 +487,10 @@ class Inventory:
 		return ( None )
 
 	def search_monitor( self, size: int, hdmi: bool ):
+		"""
+		Used to retrieve a Screen based on its display size and
+		HDMI port presence.
+		"""
 		screen_tmp = Screen( "",0,0, False,None,False )
 		for product_type in self._stock:
 			if product_type != None and type( product_type[0] ).__name__ == \
@@ -472,6 +504,10 @@ class Inventory:
 		return ( None )
 
 	def search_keyboard_info( self, wireless: bool, mechanical: bool  ):
+		"""
+		Used to retrieve a Keyboard based on its wireless and
+		mechanical attributes.
+		"""
 		keyboard_tmp = Keyboard( "",0,0,"",0,None,0 )
 		for product_type in self._stock:
 			if product_type != None and type( product_type[0] ).__name__ == \
@@ -485,6 +521,9 @@ class Inventory:
 		return ( None )
 
 	def search_keyboard_type( self, keyboard_type: str ):
+		"""
+		Used to retrieve a Keyboard by its type (ex: '65%').
+		"""
 		keyboard_tmp = Keyboard( "",0,0,"",0,None,0 )
 		for product_type in self._stock:
 			if product_type != None and type( product_type[0] ).__name__ == \
@@ -497,6 +536,10 @@ class Inventory:
 		return ( None )
 
 	def search_mouse( self, wireless: bool, button_amount: int ):
+		"""
+		Used to retrieve a Mouse based on its wireless attribute and button
+		amount.
+		"""
 		mouse_tmp = Mouse( "", 0, False, 0, None, False )
 		for product_type in self._stock:
 			if product_type != None and type( product_type[0] ).__name__ == \
@@ -510,6 +553,9 @@ class Inventory:
 		return ( None )
 
 	def search_computer( self, ram: int, hard_disk: int  ):
+		"""
+		Used to retrieve a Computer based on its RAM and Hard disk capacities.
+		"""
 		computer_tmp = Computer( "",0,"","",0,0,0,None,0 )
 		for product_type in self._stock:
 			if product_type != None and type( product_type[0] ).__name__ == \
@@ -523,6 +569,10 @@ class Inventory:
 		return ( None )
 
 	def list_quantity( self ):
+		"""
+		Calls each of the Product derived class' count() function to get
+		the total amount of instances (tracked) / Quantity of each Product.
+		"""
 		count = Computer.count()
 		print(	f"Quantity of computer{Inventory.__plural_tool(count)} " + \
 				f"in inventory = {count}" )
@@ -537,6 +587,9 @@ class Inventory:
 				f"in inventory = {count}" )
 
 	def __plural_tool( qt: int ) -> str:
+		"""
+		Tool function to manage the plurality of some output messages.
+		"""
 		if qt > 1:
 			return ( 's' )
 		else:
