@@ -1,13 +1,13 @@
 
 # ----------------------------------------------------------------- [ MODULE.S ]
 
-from data import	User,		\
-					Computer,	\
-					Screen,		\
-					Keyboard,	\
-					Mouse,		\
-					Inventory,	\
-					Product
+from data import (	User,
+					Computer,
+					Screen,
+					Keyboard,
+					Mouse,
+					Inventory,
+					Product )
 
 # --------------------------------------------------------------------- [ MAIN ]
 

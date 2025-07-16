@@ -1,12 +1,14 @@
+# -------------------------------------------------------------- [ RESSOURCE.S ]
+
 # https://docs.python.org/3/library/stdtypes.html
 # https://stackoverflow.com/questions/510972/getting-the-class-name-of-an-instance
-
 # https://text-compare.com/
+# https://www.pythonmorsels.com/breaking-long-lines-code-python/
 
 # --------------------------------------------------------------- [ CONSTANT.S ]
 
-SEP	= " - "
-SEP2 = " :: "
+SEP		= " - "
+SEP2	= " :: "
 
 # ----------------------------------------------------------------- [ CLASS.ES ]
 
@@ -50,11 +52,11 @@ class Product:
 		"""
 		return ( Product.__id )
 
-	def __init__(	self,				\
-			  		name: str,			\
-					value: int,			\
-					owner: User = None,	\
-					track: bool = True):
+	def __init__(	self,
+			  		name: str,
+					value: int,
+					owner: User = None,
+					track: bool = True ):
 		"""
 		Parameters
 		.
@@ -106,15 +108,15 @@ class Computer( Product ):
 		"""
 		return ( Computer.__id )
 
-	def __init__(	self, \
-			  	product_name: str, \
-					year: int, \
-					cpu_type: str, \
-					gpu_type: str, \
-					ram_gb: int, \
+	def __init__(	self,
+			  	product_name: str,
+					year: int,
+					cpu_type: str,
+					gpu_type: str,
+					ram_gb: int,
 					hd_gb: int,
-				product_value: int, \
-				product_owner: User = None, \
+				product_value: int,
+				product_owner: User = None,
 					track: bool = True):
 		"""
 		Parameters
@@ -160,7 +162,7 @@ class Computer( Product ):
 class Screen( Product ):
 	__id: int = 0
 
-	def count():
+	def count() -> int:
 		"""
 		Class function
 		.
@@ -170,11 +172,11 @@ class Screen( Product ):
 		"""
 		return ( Screen.__id )
 
-	def __init__(	self, \
-				product_name: str, \
-			  		display_size: int, \
-					hdmi_port: bool, \
-				product_value: int, \
+	def __init__(	self,
+				product_name: str,
+			  		display_size: int,
+					hdmi_port: bool,
+				product_value: int,
 				product_owner: User = None,
 					track: bool = True ):
 		"""
@@ -205,7 +207,7 @@ class Screen( Product ):
 class Keyboard( Product ):
 	__id: int = 0
 
-	def count():
+	def count() -> int:
 		"""
 		Class function
 		.
@@ -216,19 +218,19 @@ class Keyboard( Product ):
 		return ( Keyboard.__id )
 
 	# Class dictionnary that contains standard keyboard layouts
-	types: dict[str, tuple[str:str]] = {	"100%"	: (100, "full-size"), \
-						 					"80%"	: (80, "tenkeyless"), \
-											"75%"	: (75, "compact"), \
+	types: dict[str, tuple[str:str]] = {	"100%"	: (100, "full-size"),
+						 					"80%"	: (80, "tenkeyless"),
+											"75%"	: (75, "compact"),
 											"65%"	: (65, "small"),
 											"60%"	: (60, "most compact") }
 
-	def __init__(	self, \
-				product_name: str, \
-			  		wireless: bool, \
-					mechanical: bool, \
-					kb_type: str, \
-				product_value: int, \
-				product_owner: User = None, \
+	def __init__(	self,
+				product_name: str,
+			  		wireless: bool,
+					mechanical: bool,
+					kb_type: str,
+				product_value: int,
+				product_owner: User = None,
 					track: bool = True ):
 		"""
 		Parameters
@@ -265,7 +267,7 @@ class Keyboard( Product ):
 class Mouse( Product ):
 	__id: int = 0
 
-	def count():
+	def count() -> int:
 		"""
 		Class function
 		.
@@ -276,11 +278,11 @@ class Mouse( Product ):
 		return ( Mouse.__id )
 
 	def __init__(	self,
-				product_name: str, \
-					wireless: bool, \
+				product_name: str,
+					wireless: bool,
 					button_amount: int,
-				product_value: int, \
-				product_owner: User = None, \
+				product_value: int,
+				product_owner: User = None,
 					track: bool = True ):
 		"""
 		Parameters
@@ -300,6 +302,7 @@ class Mouse( Product ):
 		super().__init__( product_name, product_value, product_owner, track )
 		self._wireless: bool = wireless
 		self._button_amount: int = button_amount
+		return
 
 	def getWireless( self ) -> bool:
 		return ( self._wireless )
@@ -312,7 +315,7 @@ class Inventory:
 		# Creates an empty list.
 		# The main list can contain multiples lists of Product.
 		self._stock: list[list[Product]] = []
-		pass
+		return
 
 	def add_product( self, product:Product ):
 		"""
@@ -361,7 +364,7 @@ class Inventory:
 		output += "size_type=[" + keyboard.getType() + "]"
 		return ( output )
 
-	def __list_inventory_mouse( self, mouse: Mouse ):
+	def __list_inventory_mouse( self, mouse: Mouse ) -> str:
 		"""
 		Builds a string with the mouse's attributes.
 		"""
@@ -377,13 +380,13 @@ class Inventory:
 		- Builds the main part of Product details output.
 		"""
 		# Ex: funcs = { 'Computer': __list_inventory_computer(), ... }
-		funcs = {	type( Computer( "",0,"","",0,0,0,None,0 ) ).__name__: \
+		funcs = {	type( Computer( "",0,"","",0,0,0,None,0 ) ).__name__:
 		   				self.__list_inventory_computer,
-		  			type( Screen( "",0,0,0,None,0 ) ).__name__ : \
+		  			type( Screen( "",0,0,0,None,0 ) ).__name__ :
 						self.__list_inventory_screen,
-					type( Keyboard( "",0,0,"",0,None,0 ) ).__name__ : \
+					type( Keyboard( "",0,0,"",0,None,0 ) ).__name__ :
 						self.__list_inventory_keyboard,
-					type( Mouse("",0,0,0,None,0) ).__name__ : \
+					type( Mouse("",0,0,0,None,0) ).__name__ :
 						self.__list_inventory_mouse }
 		for product_type in self._stock:
 			for product in product_type:
@@ -395,18 +398,20 @@ class Inventory:
 				if owner == "":
 					owner += " "
 				output += f"owner=[" + owner + "] "
-				product_function = funcs[ type( product ).__name__ ]
+				product_function = funcs[type( product ).__name__]
 				output += product_function( product )
 				if user == None:
 					print( output )
 				elif ( product.getOwner() == user.getName() ):
 					print( output )
+		return
 
 	def list_inventory_of_user( self, user: User ):
 		"""
 		Calls for list_inventory() provididing a specific User.
 		"""
 		self.list_inventory( user )
+		return
 
 	def list_values( self ):
 		"""
@@ -426,10 +431,11 @@ class Inventory:
 				type_tmp = type_tmp.lower()
 				for item in product_type:
 					total_value += item.getPrice()
-				print(	f"Value of {type_tmp}{plural} in inventory = " + \
+				print(	f"Value of {type_tmp}{plural} in inventory = " +
 		  				f"{total_value} $" )
 				total += total_value
 		print( f"Total value = {total} $" )
+		return
 
 	def __locate_item( self, item_to_locate: Product ) -> bool:
 		"""
@@ -437,12 +443,12 @@ class Inventory:
 		added to the inventory.
 		"""
 		for product_type in self._stock:
-			if product_type != None and type( item_to_locate ).__name__ == \
-			type( product_type[0] ).__name__:
+			if ( product_type != None and
+	   	type( item_to_locate ).__name__ == type( product_type[0] ).__name__ ):
 				for item in product_type:
 					if item.getId() == item_to_locate.getId():
 						return ( True ) # item_to_locate is in the inventory.
-		print(	f"give_to{SEP2}invalid{SEP2}product " + \
+		print(	f"give_to{SEP2}invalid{SEP2}product " +
 				f"' {item_to_locate.getName()} ' is not in inventory, Skipped" )
 		return ( False ) # item_to_locate was not found in the inventory.
 
@@ -456,13 +462,14 @@ class Inventory:
 					if product.getOwner() == "":
 						product.setOwner( recipient )
 					else:
-						print(	f"give_to{SEP2}invalid{SEP2}product already " + \
-								f"assigned to someone else " + \
+						print(	f"give_to{SEP2}invalid{SEP2}product already" +
+								f" assigned to someone else " +
 								f"' {product.getName()} ', Skipped" )
 			else:
 				print( f"give_to{SEP2}invalid{SEP2}product is None, Skipped" )
+		return
 
-	def search_by_name( self, product_name: str ):
+	def search_by_name( self, product_name: str ) -> Product:
 		"""
 		Used to retrieve a Product by its name.
 		"""
@@ -470,11 +477,11 @@ class Inventory:
 			for product in product_type:
 				if product.getName() == product_name:
 					return ( product )
-		print(	f"search_by_name{SEP2}no result found for name " + \
+		print(	f"search_by_name{SEP2}no result found for name " +
 				f"' {product_name} '" )
 		return ( None )
 
-	def search_by_price( self, product_price: int ):
+	def search_by_price( self, product_price: int ) -> Product:
 		"""
 		Used to retrieve a Product by its price.
 		"""
@@ -482,89 +489,95 @@ class Inventory:
 			for product in product_type:
 				if product.getPrice() == product_price:
 					return ( product )
-		print(	f"search_by_price{SEP2}no result found for price " + \
+		print(	f"search_by_price{SEP2}no result found for price " +
 				f"{product_price}" )
 		return ( None )
 
-	def search_monitor( self, size: int, hdmi: bool ):
+	def search_monitor(	self,
+						size: int,
+						hdmi: bool ) -> Product:
 		"""
 		Used to retrieve a Screen based on its display size and
 		HDMI port presence.
 		"""
 		screen_tmp = Screen( "",0,0, False,None,False )
 		for product_type in self._stock:
-			if product_type != None and type( product_type[0] ).__name__ == \
-				type( screen_tmp ).__name__:
+			if ( product_type != None and
+		type( product_type[0] ).__name__ == type( screen_tmp ).__name__ ):
 				for product in product_type:
-					if product.getSize() == size \
-					and product.getHdmiPort() == hdmi:
+					if ( product.getSize() == size
+					and product.getHdmiPort() == hdmi ):
 						return ( product )
-		print(	f"search_monitor{SEP2}no result found for size ' {size} ' " + \
+		print(	f"search_monitor{SEP2}no result found for size ' {size} ' " +
 				f"and hdmi ' {hdmi} '" )
 		return ( None )
 
-	def search_keyboard_info( self, wireless: bool, mechanical: bool  ):
+	def search_keyboard_info(	self,
+								wireless: bool,
+								mechanical: bool ) -> Product:
 		"""
 		Used to retrieve a Keyboard based on its wireless and
 		mechanical attributes.
 		"""
 		keyboard_tmp = Keyboard( "",0,0,"",0,None,0 )
 		for product_type in self._stock:
-			if product_type != None and type( product_type[0] ).__name__ == \
-				type( keyboard_tmp ).__name__:
+			if ( product_type != None and
+			type( product_type[0] ).__name__ == type( keyboard_tmp ).__name__ ):
 				for product in product_type:
-					if product.getWireless() == wireless \
-					and product.getMechanical() == mechanical:
+					if ( product.getWireless() == wireless
+					and product.getMechanical() == mechanical ):
 						return ( product )
-		print(	f"search_keyboard_info{SEP2}no result found for wireless " + \
+		print(	f"search_keyboard_info{SEP2}no result found for wireless " +
 				f"' {wireless} ' and mechanical ' {mechanical} '" )
 		return ( None )
 
-	def search_keyboard_type( self, keyboard_type: str ):
+	def search_keyboard_type( self, keyboard_type: str ) -> Product:
 		"""
 		Used to retrieve a Keyboard by its type (ex: '65%').
 		"""
 		keyboard_tmp = Keyboard( "",0,0,"",0,None,0 )
 		for product_type in self._stock:
-			if product_type != None and type( product_type[0] ).__name__ == \
-				type( keyboard_tmp ).__name__:
+			if ( product_type != None and
+			type( product_type[0] ).__name__ == type( keyboard_tmp ).__name__ ):
 					for product in product_type:
 						if product.getType() == keyboard_type:
 							return ( product )
-		print(	f"search_keyboard_type{SEP2}no result found for type " + \
+		print(	f"search_keyboard_type{SEP2}no result found for type " +
 				f"' {keyboard_type} '" )
 		return ( None )
 
-	def search_mouse( self, wireless: bool, button_amount: int ):
+	def search_mouse(	self,
+						wireless: bool,
+						button_amount: int ) -> Product:
 		"""
 		Used to retrieve a Mouse based on its wireless attribute and button
 		amount.
 		"""
 		mouse_tmp = Mouse( "", 0, False, 0, None, False )
 		for product_type in self._stock:
-			if product_type != None and type( product_type[0] ).__name__ == \
-				type( mouse_tmp ).__name__:
+			if ( product_type != None and
+			type( product_type[0] ).__name__ == type( mouse_tmp ).__name__ ):
 					for product in product_type:
-						if product.getWireless() == wireless \
-						and product.getButtonAmount() == button_amount:
+						if ( product.getWireless() == wireless
+						and product.getButtonAmount() == button_amount ):
 							return ( product )
-		print(	f"search_mouse{SEP2}no result found for wireless " + \
+		print(	f"search_mouse{SEP2}no result found for wireless " +
 				f"' {wireless} ' and button(s) ' {button_amount} '" )
 		return ( None )
 
-	def search_computer( self, ram: int, hard_disk: int  ):
+	def search_computer( self, ram: int, hard_disk: int ) -> Product:
 		"""
 		Used to retrieve a Computer based on its RAM and Hard disk capacities.
 		"""
 		computer_tmp = Computer( "",0,"","",0,0,0,None,0 )
 		for product_type in self._stock:
-			if product_type != None and type( product_type[0] ).__name__ == \
-			type( computer_tmp ).__name__:
+			if ( product_type != None and
+			type( product_type[0] ).__name__ == type( computer_tmp ).__name__ ):
 				for computer in product_type:
-					if computer.getRam() == ram \
-					and computer.getHardDisk() == hard_disk:
+					if ( computer.getRam() == ram and 
+					computer.getHardDisk() == hard_disk ):
 						return ( computer )
-		print(	f"search_computer{SEP2}no result found for memory size " + \
+		print(	f"search_computer{SEP2}no result found for memory size " +
 				f"' {ram} ' and disk space ' {hard_disk} '" )
 		return ( None )
 
@@ -574,17 +587,18 @@ class Inventory:
 		the total amount of instances (tracked) / Quantity of each Product.
 		"""
 		count = Computer.count()
-		print(	f"Quantity of computer{Inventory.__plural_tool(count)} " + \
+		print(	f"Quantity of computer{Inventory.__plural_tool(count)} " +
 				f"in inventory = {count}" )
 		count = Screen.count()
-		print(	f"Quantity of screen{Inventory.__plural_tool(count)} " + \
+		print(	f"Quantity of screen{Inventory.__plural_tool(count)} " +
 				f"in inventory = {count}" )
 		count = Keyboard.count()
-		print(	f"Quantity of keyboard{Inventory.__plural_tool(count)} " + \
+		print(	f"Quantity of keyboard{Inventory.__plural_tool(count)} " +
 				f"in inventory = {count}" )
 		count = Mouse.count()
-		print(	f"Quantity of mouse{Inventory.__plural_tool(count)} " + \
+		print(	f"Quantity of mouse{Inventory.__plural_tool(count)} " +
 				f"in inventory = {count}" )
+		return
 
 	def __plural_tool( qt: int ) -> str:
 		"""

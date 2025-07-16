@@ -1,3 +1,5 @@
+# -------------------------------------------------------------- [ RESSOURCE.S ]
+
 # https://stackoverflow.com/questions/9195455/how-to-document-a-method-with-parameters
 
 # ----------------------------------------------------------------- [ MODULE.S ]
@@ -27,21 +29,22 @@ PROMPT_IN	= f"{BLU}Veuillez entrer une phrase à décrypter: {RST}"
 # https://www.geeksforgeeks.org/python/protected-variable-in-python/
 
 class Decrypt:
-	_decrypted = ""
-	_encrypted = ""
+	_decrypted: str = ""
+	_encrypted: str = ""
 	_size = 0
 
-	def __init__( self, msg_to_decrypt=None ):
-		if not msg_to_decrypt:
+	def __init__( self, msg_to_decrypt: str = None ):
+		if msg_to_decrypt == None:
 			self.setEncrypted()
 		else:
 			self.setEncrypted( msg_to_decrypt )
+		return
 
-	def setEncrypted( self, msg_to_decrypt=None ):
+	def setEncrypted( self, msg_to_decrypt: str = None ):
 		"""
-			- If needed, takes input from user (user_input)
-			- Stores the encrypted (original) input.
-			- Launch the decrypting method.
+		- If needed (no string provided), takes input from user (user_input)
+		- Stores the encrypted (original) input.
+		- Launch the decrypting method.
 		"""
 		if msg_to_decrypt:
 			self._encrypted = msg_to_decrypt
@@ -52,13 +55,14 @@ class Decrypt:
 			self._encrypted = user_input
 		self._size = len( self._encrypted )
 		self._decrypt()
+		return
 
 	def _decrypt( self ):
 		"""
-			- Parses encrypted message.
-			- Searching for FLAG
-				- If found, validates the following character.
-			- Also validates if each character should be ignored.
+		- Parses encrypted message.
+		- Searching for FLAG
+			- If found, validates the following character.
+		- Also validates if each character should be ignored.
 		"""
 		i = 0
 		while i < self._size:
@@ -73,51 +77,63 @@ class Decrypt:
 			i += 1
 		print( self._decrypted )
 
-	def _checkTargetChar( self, char ):
+	def _checkTargetChar( self, char ) -> int:
 		"""
-			:param str char:
-			:return: The index from CHAR_TARGETS where [char] was found. \
-			Returns -1 if [char] was not found.
+		Parameters
+		.
+		- char -> Sought character
+		Returns
+		.
+		- The index from CHAR_TARGETS constant where [char] was found.
+		- OR -1 if [char] was not found.
 		"""
 		i = 0
 		size = len( CHAR_TARGETS )
 		while i < size:
 			if CHAR_TARGETS[i] == char:
-				return( i )
+				return ( i )
 			i += 1
 		return ( -1 )
 
-	def _checkIgnoreChar( self, char ):
+	def _checkIgnoreChar( self, char ) -> bool:
 		"""
-			:param str char: A single character from an encrypted message.
-			:return: Whether [char] was found in CHAR_IGNORE
+		Parameters
+		.
+		- char -> A single character from an encrypted message.
+		Returns
+		.
+		Whether [char] was found in CHAR_IGNORE constant.
 		"""
 		for letter in CHAR_IGNORE:
 			if letter == char:
 				return( True )
-		return( False )
+		return ( False )
 
-	def getEncrypted( self ):
-		return( self._encrypted )
+	def getEncrypted( self ) -> str:
+		return ( self._encrypted )
 
-	def getDecrypted( self ):
-		return( self._decrypted )
+	def getDecrypted( self ) -> str:
+		return ( self._decrypted )
 
 	def displayEncrypted( self ):
 		print( self.getEncrypted() )
+		return
 
 	def displayDecrypted( self ):
 		print( self.getDecrypted() )
+		return
 
 # --------------------------------------------------------------------- [ MAIN ]
 # https://realpython.com/python-main-function/
 
 def main():
 	arguments = sys.argv
+
 	if len( arguments ) > 1:
-		message=Decrypt( arguments[1] )
+		message = Decrypt( arguments[1] )
 	else:
-		message=Decrypt()
+		message = Decrypt()
+	return ( 0 )
 
 if __name__ == "__main__":
 	main()
