@@ -11,12 +11,12 @@ $InputPromptGuess		= "Tentative #"
 $InputPromptUserName	= "Veuillez entrer votre nom d'utilisateur"
 $GameplayFail			= "Echec: "
 $GameplayPromptLower	= "${GameplayFail}Trop bas."
-$GameplayPromptHigher	= "${GameplayFail}Trop eleve."
+$GameplayPromptHigher	= "${GameplayFail}Trop élevé."
 
 $ErrorMsg	= "Erreur: "
-$TryAgain	= "Veuillez reessayer."
+$TryAgain	= "Veuillez réessayer."
 $ErrorMin	= "${ErrorMsg}Nombre trop petit: ${TryAgain}"
-$ErrorMax	= "${ErrorMsg}Nombre trop eleve: ${TryAgain}"
+$ErrorMax	= "${ErrorMsg}Nombre trop élevé: ${TryAgain}"
 
 $player	= Read-Host -Prompt "${InputPromptUserName}"
 
@@ -34,6 +34,7 @@ while ( $HasGuessed -eq $false ) {
 		}
 	} else {
 		$HasGuessed = $true
-		Write-Host "Felicitation ${player}: Vous avez trouve la reponse en ${tries} essais!"
+		Write-Host	"Félicitation ${player}: Vous avez trouvé la réponse"`
+					"en ${tries} essais!"
 	}
 }

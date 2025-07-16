@@ -29,11 +29,10 @@ PROMPT_IN	= f"{BLU}Veuillez entrer une phrase à décrypter: {RST}"
 # https://www.geeksforgeeks.org/python/protected-variable-in-python/
 
 class Decrypt:
-	_decrypted: str = ""
-	_encrypted: str = ""
-	_size = 0
-
 	def __init__( self, msg_to_decrypt: str = None ):
+		self.__decrypted: str = ""
+		self._encrypted: str = ""
+		self._size: int = 0
 		if msg_to_decrypt == None:
 			self.setEncrypted()
 		else:
@@ -54,10 +53,10 @@ class Decrypt:
 				user_input = input( PROMPT_IN )
 			self._encrypted = user_input
 		self._size = len( self._encrypted )
-		self._decrypt()
+		self.__decrypt()
 		return
 
-	def _decrypt( self ):
+	def __decrypt( self ):
 		"""
 		- Parses encrypted message.
 		- Searching for FLAG
@@ -69,15 +68,15 @@ class Decrypt:
 			if self._encrypted[i] == FLAG:
 				i += 1
 				if i < self._size:
-					l = self._checkTargetChar( self._encrypted[i] )
+					l = self.__checkTargetChar( self._encrypted[i] )
 					if l >= 0:
-						self._decrypted += ( CHAR_VALUES[l] )
-			elif self._checkIgnoreChar( self._encrypted[i] ) == False:
-				self._decrypted += ( self._encrypted[i] )
+						self.__decrypted += ( CHAR_VALUES[l] )
+			elif self.__checkIgnoreChar( self._encrypted[i] ) == False:
+				self.__decrypted += ( self._encrypted[i] )
 			i += 1
-		print( self._decrypted )
+		print( self.__decrypted )
 
-	def _checkTargetChar( self, char ) -> int:
+	def __checkTargetChar( self, char ) -> int:
 		"""
 		Parameters
 		.
@@ -95,7 +94,7 @@ class Decrypt:
 			i += 1
 		return ( -1 )
 
-	def _checkIgnoreChar( self, char ) -> bool:
+	def __checkIgnoreChar( self, char ) -> bool:
 		"""
 		Parameters
 		.
@@ -113,7 +112,7 @@ class Decrypt:
 		return ( self._encrypted )
 
 	def getDecrypted( self ) -> str:
-		return ( self._decrypted )
+		return ( self.__decrypted )
 
 	def displayEncrypted( self ):
 		print( self.getEncrypted() )
@@ -126,7 +125,7 @@ class Decrypt:
 # --------------------------------------------------------------------- [ MAIN ]
 # https://realpython.com/python-main-function/
 
-def main():
+def main() -> int:
 	arguments = sys.argv
 
 	if len( arguments ) > 1:

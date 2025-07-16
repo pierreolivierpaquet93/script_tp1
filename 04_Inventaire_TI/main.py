@@ -11,7 +11,7 @@ from data import (	User,
 
 # --------------------------------------------------------------------- [ MAIN ]
 
-def main():
+def main() -> int:
 	############# Products ############
 
 	inventory = Inventory()
