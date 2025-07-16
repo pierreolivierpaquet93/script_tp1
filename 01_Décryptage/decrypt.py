@@ -75,6 +75,7 @@ class Decrypt:
 				self.__decrypted += ( self._encrypted[i] )
 			i += 1
 		print( self.__decrypted )
+		return
 
 	def __checkTargetChar( self, char ) -> int:
 		"""

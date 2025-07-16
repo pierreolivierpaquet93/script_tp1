@@ -26,22 +26,27 @@ class User:
 		self._username: str = username
 		self._age: int = age
 		self._books: list[Book] = [] # Empty Book list.
+		return
 
 	def checkHowManyBooks( self ):
 		qt = self.getBooksQuantity()
-		print( f"I {self.getUsername()} currently have " + \
+		print(	f"I {self.getUsername()} currently have " +
 				f"{qt} {conjugate("book", qt)}." )
+		return
 
 	def borrowBook( self, book_to_borrow: Book ):
-			self._books.append( book_to_borrow )
+		self._books.append( book_to_borrow )
+		return
 
-	def getBooksQuantity( self ):
+	def getBooksQuantity( self ) -> int:
 		return ( len( self._books ) )
 
-	def getUsername( self ):
+	def getUsername( self ) -> str:
 		return ( self._username )
 
-	def returnBooks( self, library_books: list[Book], titles:list[str] = None ):
+	def returnBooks(	self,
+						library_books: list[Book],
+						titles:list[str] = None ):
 		if titles == None: # Return all books
 			for book in self._books:
 				library_books.append( book )
@@ -52,6 +57,7 @@ class User:
 					if book.getTitle() == title:
 						self._books.remove( book )
 						break
+		return
 
 class Library:
 	def __init__( self, library_name, books: list[Book] ):
@@ -74,7 +80,7 @@ class Library:
 			for book in self._books:
 				if book.getGenre() == genre:
 					count += 1
-			print( f"The {self.getName()} library currently have " + \
+			print(	f"The {self.getName()} library currently have " +
 		 			f"{count} {conjugate("book", count)} of genre {genre}" )
 
 	def getGenres( self ) -> list[str]:
@@ -97,6 +103,7 @@ class Library:
 
 	def returnAllBook( self, user:User ):
 		user.returnBooks( self._books, None )
+		return
 
 # ------------------------------------------------------------------- [ TOOL.S ]
 
