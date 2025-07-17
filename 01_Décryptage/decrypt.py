@@ -33,11 +33,10 @@ class Decrypt:
 		self.__decrypted: str = ""
 		self._encrypted: str = ""
 		self._size: int = 0
-		if msg_to_decrypt == None:
+		if not msg_to_decrypt:
 			self.setEncrypted()
 		else:
 			self.setEncrypted( msg_to_decrypt )
-		return
 
 	def setEncrypted( self, msg_to_decrypt: str = None ):
 		"""
@@ -54,7 +53,6 @@ class Decrypt:
 			self._encrypted = user_input
 		self._size = len( self._encrypted )
 		self.__decrypt()
-		return
 
 	def __decrypt( self ):
 		"""
@@ -64,18 +62,20 @@ class Decrypt:
 		- Also validates if each character should be ignored.
 		"""
 		i = 0
+		char_tmp = ""
 		while i < self._size:
-			if self._encrypted[i] == FLAG:
+			char_tmp = self._encrypted[i]
+			if char_tmp == FLAG:
 				i += 1
 				if i < self._size:
+					# next: using self._encrypted[i] because it's only used once
 					l = self.__checkTargetChar( self._encrypted[i] )
 					if l >= 0:
 						self.__decrypted += ( CHAR_VALUES[l] )
-			elif self.__checkIgnoreChar( self._encrypted[i] ) == False:
-				self.__decrypted += ( self._encrypted[i] )
+			elif self.__checkIgnoreChar( char_tmp ) == False:
+				self.__decrypted += ( char_tmp )
 			i += 1
 		print( self.__decrypted )
-		return
 
 	def __checkTargetChar( self, char ) -> int:
 		"""
@@ -117,11 +117,9 @@ class Decrypt:
 
 	def displayEncrypted( self ):
 		print( self.getEncrypted() )
-		return
 
 	def displayDecrypted( self ):
 		print( self.getDecrypted() )
-		return
 
 # --------------------------------------------------------------------- [ MAIN ]
 # https://realpython.com/python-main-function/
