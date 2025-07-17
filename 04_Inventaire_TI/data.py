@@ -1,12 +1,49 @@
 # -------------------------------------------------------------- [ RESSOURCE.S ]
 
+# https://stackoverflow.com/questions/1535327/how-to-print-instances-of-a-class-using-print
+# https://stackoverflow.com/questions/38758668/grouping-functions-by-using-classes-in-python
+# https://stackoverflow.com/questions/510972/getting-the-class-name-of-an-instance
 
 # --------------------------------------------------------------- [ CONSTANT.S ]
 
+# -------------------- Separators
 SEP		= " - "
 SEP2	= " :: "
+SPEC_SEP = " "
+
+# -------------------- Product
+VAL		= "value="
+OWN		= "owner="
+
+# -------------------- Misc
+YEAR	= "year="
+
+# -------------------- Computer
+CPU		= "cpu="
+GPU		= "gpu="
+RAM		= "memory_size="
+HD		= "disk_space="
+
+# -------------------- Screen
+SCREEN_SIZE	= "screen_size="
+HDMI		= "hdmi="
+
+# -------------------- Utils
+STR_BOX	= ( '[', ']' )
+EMPTY_BOX = " "
 
 # ----------------------------------------------------------------- [ CLASS.ES ]
+
+class Util:
+	def __init__( self ) -> None:
+		pass
+
+	@staticmethod
+	def strBox( text: str ) -> str:
+		boxed = ""
+		if not text:
+			text = EMPTY_BOX
+		return ( STR_BOX[0] + text + STR_BOX[1] )
 
 class User:
 	def __init__(	self,
@@ -49,6 +86,13 @@ class Product:
 			return ( True )
 		return ( False )
 
+	def __str__( self ) -> str:
+		output = ""
+		value: str = VAL + Util.strBox( str( self.__value ) )
+		owner: str = OWN + Util.strBox( self.getUserName() )
+		output += self.__name + SPEC_SEP + value + SPEC_SEP + owner
+		return ( output )
+
 class Computer ( Product ):
 	__id: int = 0
 
@@ -72,6 +116,23 @@ class Computer ( Product ):
 		self.__ram: int		= computer_ram
 		self.__hd: int		= computer_hd
 		Computer.__id += 1
+
+	def __str__( self ) -> str:
+		output: str = ""
+		product_specs: str = super().__str__()
+		year: str = YEAR + Util.strBox( str( self.__year ) )
+		cpu: str = CPU + Util.strBox( self.__cpu )
+		gpu: str = GPU + Util.strBox( self.__gpu )
+		ram: str = RAM + Util.strBox( str( self.__ram ) )
+		disk_space: str = HD + Util.strBox( str( self.__hd ) )
+		output += (	self.__class__.__name__ + SEP +
+					product_specs + SPEC_SEP +
+					year + SPEC_SEP +
+					cpu + SPEC_SEP +
+					gpu + SPEC_SEP +
+					ram + SPEC_SEP +
+					disk_space)
+		return ( output )
 
 	def getYear( self ) -> int:
 		return ( self.__year )
@@ -105,6 +166,17 @@ class Screen ( Product ):
 		self.__size: float		= screen_size
 		self.__hdmi_port: bool	= screen_hdmi_port
 		Screen.__id += 1
+
+	def __str__( self ) -> str:
+		output: str = ""
+		product_specs: str = super().__str__()
+		size: str = SCREEN_SIZE + Util.strBox( str( self.__size ) )
+		hdmi: str = HDMI + Util.strBox( str( self.__hdmi_port ) )
+		output += (	self.__class__.__name__ + SEP +
+					product_specs + SPEC_SEP +
+					size + SPEC_SEP +
+					hdmi)
+		return ( output )
 
 	def getSize( self ) -> float:
 		return ( self.__size )
@@ -166,7 +238,7 @@ class Mouse ( Product ):
 		return ( self.__button_amount )
 
 class Inventory:
-	def __init__( self ):
+	def __init__( self ) -> None:
 		self.__stock: list[Product] = []
 
 	def add_product( self, product: Product ):
