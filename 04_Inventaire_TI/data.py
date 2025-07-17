@@ -167,10 +167,10 @@ class Mouse ( Product ):
 
 class Inventory:
 	def __init__( self ):
-		self.__stock: Product = []
+		self.__stock: list[Product] = []
 
-	def add_product( self ):
-		pass
+	def add_product( self, product: Product ):
+		self.__stock.append( product )
 
 	def list_inventory( self ):
 		pass

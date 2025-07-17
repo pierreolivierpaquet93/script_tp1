@@ -1,7 +1,7 @@
 
 # ----------------------------------------------------------------- [ MODULE.S ]
 
-from data import User, Product, Computer, Screen, Keyboard
+from data import Inventory, User, Product, Computer, Screen, Keyboard
 
 # --------------------------------------------------------------------- [ MAIN ]
 
@@ -11,6 +11,10 @@ def main() -> int:
 	item0 = Computer( "ordinateur", 2020, "intel", "nvidia", 8, 512, 1200 )
 	item1 = Screen( "ecran", 16.5, True, 1000 )
 	item3 = Keyboard( "clavier", True, False, "75%", 100 )
+	item4 = Keyboard( "clavier2", False, True, "0%", 3000 )
+
+	inventaire = Inventory()
+	inventaire.add_product( item3 )
 
 	return ( 0 )
 
