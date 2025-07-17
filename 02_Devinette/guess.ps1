@@ -23,8 +23,14 @@ $player	= Read-Host -Prompt "${InputPromptUserName}"
 [int]$tries = 1
 while ( $HasGuessed -eq $false ) {
 	[int]$guess = Read-Host -Prompt "${InputPromptGuess}${tries}"
-	if ( $guess -lt $min) { Write-Host $ErrorMin; continue }
-	elseif ( $guess -gt $max ) { Write-Host $ErrorMax; continue }
+	if ( $guess -lt $min) {
+		Write-Host $ErrorMin;
+		continue
+	}
+	elseif ( $guess -gt $max ) {
+		Write-Host $ErrorMax;
+		continue
+	}
 	if ( $guess -ne $answer ) {
 		$tries++
 		if ( $guess -lt $answer ) {
