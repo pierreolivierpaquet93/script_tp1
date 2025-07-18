@@ -7,26 +7,35 @@
 # --------------------------------------------------------------- [ CONSTANT.S ]
 
 # -------------------- Separators
-SEP		= " - "
-SEP2	= " :: "
-SPEC_SEP = " "
+SEP			= " - "
+SEP2		= " :: "
+SPEC_SEP	= " "
+ASSOC_SYM	= '='
 
 # -------------------- Product
-VAL		= "value="
-OWN		= "owner="
+VAL		= f"value{ASSOC_SYM}"
+OWN		= f"owner{ASSOC_SYM}"
 
 # -------------------- Misc
-YEAR	= "year="
+YEAR	= f"year{ASSOC_SYM}"
+WI		= f"wireless{ASSOC_SYM}"
 
 # -------------------- Computer
-CPU		= "cpu="
-GPU		= "gpu="
-RAM		= "memory_size="
-HD		= "disk_space="
+CPU		= f"cpu{ASSOC_SYM}"
+GPU		= f"gpu{ASSOC_SYM}"
+RAM		= f"memory_size{ASSOC_SYM}"
+HD		= f"disk_space{ASSOC_SYM}"
 
 # -------------------- Screen
-SCREEN_SIZE	= "screen_size="
-HDMI		= "hdmi="
+SCRN	= f"screen_size{ASSOC_SYM}"
+HDMI	= f"hdmi{ASSOC_SYM}"
+
+# -------------------- Keyboard
+KB_TYP	= f"size_type{ASSOC_SYM}"
+MECH	= f"mechanical{ASSOC_SYM}"
+
+# -------------------- Mouse
+BTNS 	= f"buttons{ASSOC_SYM}"
 
 # -------------------- Utils
 STR_BOX	= ( '[', ']' )
@@ -39,9 +48,9 @@ class Util:
 		pass
 
 	@staticmethod
-	def strBox( text: str ) -> str:
+	def strBox( text: str, pad: bool = True ) -> str:
 		boxed = ""
-		if not text:
+		if not text and pad:
 			text = EMPTY_BOX
 		return ( STR_BOX[0] + text + STR_BOX[1] )
 
@@ -63,9 +72,10 @@ class Product:
 			  		name: str,
 					value: int,
 					user: User = None ) -> None:
-		self.__name: str	= name
-		self.__value: int	= value
-		self.__user: User	= user
+		self.__name: str		= name
+		self.__value: int		= value
+		self.__user: User		= user
+		self.__registered: bool = False
 
 	def getName( self ) -> str:
 		return ( self.__name )
@@ -92,6 +102,19 @@ class Product:
 		owner: str = OWN + Util.strBox( self.getUserName() )
 		output += self.__name + SPEC_SEP + value + SPEC_SEP + owner
 		return ( output )
+
+	def register( self ) -> None:
+		self.__registered = True
+
+	def checkAttributes(	self,
+				   		name: str = None,
+				   		value: int = None,
+						user: User = None ) -> bool:
+		if (( name and name != self.__name ) or
+			( value and value != self.__value ) or
+			( user and user.getName() != self.getUserName() )):
+			return ( False )
+		return ( True )
 
 class Computer ( Product ):
 	__id: int = 0
@@ -122,7 +145,7 @@ class Computer ( Product ):
 		product_specs: str = super().__str__()
 		year: str = YEAR + Util.strBox( str( self.__year ) )
 		cpu: str = CPU + Util.strBox( self.__cpu )
-		gpu: str = GPU + Util.strBox( self.__gpu )
+		gpu: str = GPU + Util.strBox( self.__gpu, False )
 		ram: str = RAM + Util.strBox( str( self.__ram ) )
 		disk_space: str = HD + Util.strBox( str( self.__hd ) )
 		output += (	self.__class__.__name__ + SEP +
@@ -149,6 +172,20 @@ class Computer ( Product ):
 	def getHd( self ) -> int:
 		return ( self.__hd )
 
+	def checkComputerAttributes(	self,
+									year: int = None,
+									cpu: str = None,
+									gpu: str = None,
+									ram: int = None,
+									hd: int = None ) -> bool:
+		if ( ( year and year != self.__year ) or
+			 ( cpu and cpu != self.__cpu ) or
+			 ( gpu and gpu != self.__gpu ) or
+			 ( ram and ram != self.__ram ) or
+			 ( hd and hd != self.__hd ) ):
+			return ( False )
+		return ( True )
+
 class Screen ( Product ):
 	__id: int = 0
 
@@ -163,14 +200,14 @@ class Screen ( Product ):
 					product_value: int,
 					product_user: User = None ) -> None:
 		super().__init__( product_name, product_value, product_user )
-		self.__size: float		= screen_size
+		self.__size: float		= round( screen_size, 2 )
 		self.__hdmi_port: bool	= screen_hdmi_port
 		Screen.__id += 1
 
 	def __str__( self ) -> str:
 		output: str = ""
 		product_specs: str = super().__str__()
-		size: str = SCREEN_SIZE + Util.strBox( str( self.__size ) )
+		size: str = SCRN + Util.strBox( str( self.__size ) )
 		hdmi: str = HDMI + Util.strBox( str( self.__hdmi_port ) )
 		output += (	self.__class__.__name__ + SEP +
 					product_specs + SPEC_SEP +
@@ -183,6 +220,14 @@ class Screen ( Product ):
 
 	def getHdmiPort( self ) -> bool:
 		return ( self.__hdmi_port )
+
+	def checkScreenAttributes(	self,
+								size: float = None,
+								hdmi: bool = None ) -> bool:
+		if (( size and round(size, 2) != self.__size ) or
+			( hdmi and hdmi != self.__hdmi_port ) ):
+			return ( False )
+		return ( True )
 
 class Keyboard ( Product ):
 	__id: int = 0
@@ -204,6 +249,19 @@ class Keyboard ( Product ):
 		self.__type: str		= keyboard_type
 		Keyboard.__id += 1
 
+	def __str__( self ) -> str:
+		output = ""
+		product_specs: str = super().__str__()
+		wireless: str = WI + Util.strBox( str( self.__wireless ) )
+		mechanical: str = MECH + Util.strBox( str( self.__mechanical ) )
+		size_type: str = KB_TYP + Util.strBox( self.__type )
+		output += (	self.__class__.__name__ + SEP +
+					product_specs + SPEC_SEP +
+					wireless + SPEC_SEP +
+					mechanical + SPEC_SEP +
+					size_type)
+		return ( output )
+
 	def getWireless( self ) -> bool:
 		return ( self.__wireless )
 
@@ -212,6 +270,16 @@ class Keyboard ( Product ):
 
 	def getType( self ) -> str:
 		return ( self.__type )
+
+	def checkKeyboardAttributes(	self,
+									wireless: bool = None,
+									mechanical: bool = None,
+									kb_type: str = None ) -> bool:
+		if ( ( wireless != self.__wireless ) or
+	  		 ( mechanical != self.__mechanical ) or
+			 ( kb_type != self.__type ) ):
+			return ( False )
+		return ( True )
 
 class Mouse ( Product ):
 	__id: int = 0
@@ -231,6 +299,17 @@ class Mouse ( Product ):
 		self.__button_amount: int	= mouse_button_amount
 		Mouse.__id += 1
 
+	def __str__( self ) -> str:
+		output:str = ""
+		product_specs = super().__str__()
+		wireless: str = WI + Util.strBox( str( self.__wireless ) )
+		buttons: str = BTNS + Util.strBox( str( self.__button_amount ) )
+		output += (	self.__class__.__name__ + SEP +
+			 		product_specs + SPEC_SEP +
+					wireless + SPEC_SEP +
+					buttons )
+		return ( output )
+
 	def getWireless( self ) -> bool:
 		return ( self.__wireless )
 
@@ -243,9 +322,11 @@ class Inventory:
 
 	def add_product( self, product: Product ):
 		self.__stock.append( product )
+		product.register()
 
 	def list_inventory( self ):
-		pass
+		for product in self.__stock:
+			print( product )
 
 	def list_inventory_of_user( self ):
 		pass
@@ -256,22 +337,65 @@ class Inventory:
 	def give_to( self ):
 		pass
 
-	def search_by_name( self ):
-		pass
+	def __search_by_product(	self,
+								name: str = None,
+								value: int = None,
+								user: User = None ) -> Product:
+		for product in self.__stock:
+			if product.checkAttributes( name, value, user ):
+				return ( product )
+		return ( None )
 
-	def search_by_price( self ):
-		pass
+	def __search_by_monitor(	self,
+								size: float = None,
+								hdmi: bool = None ) -> Product:
+		for product in self.__stock:
+			if( isinstance( product, Screen ) and
+			product.checkScreenAttributes( size, hdmi ) ):
+					return ( product )
+		return ( None )
 
-	def search_monitor( self ):
-		pass
+	def __search_by_keyboard(	self,
+								wireless: bool = None,
+								mechanical: bool = None,
+								kb_type: str = None ) -> Product:
+		for product in self.__stock:
+			if ( isinstance( product, Keyboard ) and
+	   		product.checkKeyboardAttributes( wireless, mechanical, kb_type ) ):
+				return ( product )
+		return ( None )
 
-	def search_keyboard_info( self ):
-		pass
+	def __search_by_computer(	self,
+								year: int = None,
+								cpu: str = None,
+								gpu: str = None,
+								ram: int = None,
+								hd: int = None) -> bool:
+		for product in self.__stock:
+			if ( isinstance( product, Computer ) and
+			product.checkComputerAttributes( year, cpu, gpu, ram, hd ) ):
+				return ( product )
+		return ( None )
 
-	def search_keyboard_type( self ):
-		pass
+	def search_by_name( self, name: str ) -> Product:
+		return ( self.__search_by_product( name, None, None ) )
 
-	def search_computer( self ):
+	def search_by_price( self, value: int  ) -> Product:
+		return ( self.__search_by_product( None, value, None ) )
+
+	def search_monitor( self, size: float, hdmi: bool ):
+		return ( self.__search_by_monitor( size, hdmi ) )
+
+	def search_keyboard_info( self, wireless: bool, mechanical: bool  ):
+		return ( self.__search_by_keyboard( wireless, mechanical, None ) )
+
+	def search_keyboard_type( self, kb_type: str ):
+		return ( self.__search_by_keyboard( None, None, kb_type ) )
+
+	def search_computer( self, ram: int, hard_disk: int ):
+		return ( self.__search_by_computer( None, None, None, ram, hard_disk ) )
+
+	def search_mouse( self ):
 		pass
 
 	def list_quantity( self ):
