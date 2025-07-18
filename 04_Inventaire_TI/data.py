@@ -40,6 +40,7 @@ BTNS 	= f"buttons{ASSOC_SYM}"
 # -------------------- Utils
 STR_BOX	= ( '[', ']' )
 EMPTY_BOX = " "
+SKIP = ", Skipped"
 
 # ----------------------------------------------------------------- [ CLASS.ES ]
 
@@ -90,7 +91,7 @@ class Product:
 		return ( self.__value )
 
 	def getUser( self ) -> User:
-		return ( self.__User )
+		return ( self.__user )
 
 	def getUserName( self ) -> str:
 		if self.__user:
@@ -111,6 +112,9 @@ class Product:
 
 	def register( self ) -> None:
 		self.__registered = True
+
+	def isRegistered( self ) -> bool:
+		return self.__registered
 
 	def checkAttributes(	self,
 				   		name: str = None,
@@ -281,9 +285,9 @@ class Keyboard ( Product ):
 									wireless: bool = None,
 									mechanical: bool = None,
 									kb_type: str = None ) -> bool:
-		if ( ( wireless != self.__wireless ) or
-	  		 ( mechanical != self.__mechanical ) or
-			 ( kb_type != self.__type ) ):
+		if ( ( wireless and wireless != self.__wireless ) or
+	  		 ( mechanical and mechanical != self.__mechanical ) or
+			 ( kb_type and kb_type != self.__type ) ):
 			return ( False )
 		return ( True )
 
@@ -347,16 +351,43 @@ class Inventory:
 			if ( product.checkAttributes( None, None, user ) ):
 				print( product )
 
-	def list_values( self ):
-		pass
+	def list_values( self ) -> None:
+		types = {
+	"Computer": [Computer, 0],
+	"Screen": [Screen, 0],
+	"Keyboard": [Keyboard, 0],
+	"Mouse": [Mouse, 0]
+	}
+		total = 0
+		for product in self.__stock:
+			current_value = product.getValue()
+			types[product.__class__.__name__][1] += current_value
+			total += current_value
+		for type in types:
+			print( f"Value of {type}s in inventory {ASSOC_SYM} " +
+	f"{types[type][1]} $" )
+		print( f"Total value {ASSOC_SYM} {total} $" )
 
-	def give_to( self ):
-		pass
+	def give_to( self, products: list[Product], recipient: User ) -> None:
+		for product in products:
+			err = f"give_to{SEP2}invalid{SEP2}product "
+			if product:
+				if product.isRegistered():
+					if not product.setUser( recipient ):
+						print( f"{err}already assigned to someone else " +
+	f"' {product.getName()} '{SKIP}" )
+				else:
+					print( f"{err}' {product.getName()} ' " +
+	f"is not in inventory{SKIP}" )
+			else:
+				print( f"{err}is None{SKIP}" )
 
-	def __search_by_product(	self,
-								name: str = None,
-								value: int = None,
-								user: User = None ) -> Product:
+	def __search_by_product(
+		self,
+		name: str = None,
+		value: int = None,
+		user: User = None
+		) -> Product:
 		for product in self.__stock:
 			if product.checkAttributes( name, value, user ):
 				return ( product )
@@ -381,12 +412,14 @@ class Inventory:
 				return ( product )
 		return ( None )
 
-	def __search_by_computer(	self,
-								year: int = None,
-								cpu: str = None,
-								gpu: str = None,
-								ram: int = None,
-								hd: int = None) -> Product:
+	def __search_by_computer(
+		self,
+		year: int = None,
+		cpu: str = None,
+		gpu: str = None,
+		ram: int = None,
+		hd: int = None
+	) -> Product:
 		for product in self.__stock:
 			if ( isinstance( product, Computer ) and
 			product.checkComputerAttributes( year, cpu, gpu, ram, hd ) ):
@@ -403,10 +436,18 @@ class Inventory:
 		return ( None )
 
 	def search_by_name( self, name: str ) -> Product:
-		return ( self.__search_by_product( name, None, None ) )
+		product = self.__search_by_product( name, None, None )
+		if not product:
+			print( f"search_by_name{SEP2}no result found for name " +
+	f"' {name} '" )
+		return product
 
 	def search_by_price( self, value: int  ) -> Product:
-		return ( self.__search_by_product( None, value, None ) )
+		product = self.__search_by_product( None, value, None )
+		if not product:
+			print( f"search_by_price{SEP2}no result found for price " +
+	f"' {value} '" )
+		return product
 
 	def search_monitor( self, size: float, hdmi: bool ):
 		return ( self.__search_by_monitor( size, hdmi ) )
