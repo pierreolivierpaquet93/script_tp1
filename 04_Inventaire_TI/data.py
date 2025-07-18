@@ -54,6 +54,12 @@ class Util:
 			text = EMPTY_BOX
 		return ( STR_BOX[0] + text + STR_BOX[1] )
 
+	@staticmethod
+	def plural( word: str, count: int ) -> str:
+		if count > 1:
+			return ( word + 's' )
+		return ( word )
+
 class User:
 	def __init__(	self,
 					name: str,
@@ -316,6 +322,14 @@ class Mouse ( Product ):
 	def getButtonAmount( self ) -> int:
 		return ( self.__button_amount )
 
+	def checkMouseAttributes(	self,
+								wireless: bool = None,
+								buttons: bool = None ) -> bool:
+		if ( ( wireless and wireless != self.__wireless ) or
+	  		 ( buttons and buttons != self._buttons ) ):
+			return ( False )
+		return ( True )
+
 class Inventory:
 	def __init__( self ) -> None:
 		self.__stock: list[Product] = []
@@ -370,10 +384,19 @@ class Inventory:
 								cpu: str = None,
 								gpu: str = None,
 								ram: int = None,
-								hd: int = None) -> bool:
+								hd: int = None) -> Product:
 		for product in self.__stock:
 			if ( isinstance( product, Computer ) and
 			product.checkComputerAttributes( year, cpu, gpu, ram, hd ) ):
+				return ( product )
+		return ( None )
+
+	def __search_by_mouse(	self,
+							wireless: bool = None,
+							buttons: bool = None ) -> Product:
+		for product in self.__stock:
+			if ( isinstance( product, Mouse ) and
+	   		product.checkMouseAttributes( wireless, buttons ) ):
 				return ( product )
 		return ( None )
 
@@ -395,8 +418,19 @@ class Inventory:
 	def search_computer( self, ram: int, hard_disk: int ):
 		return ( self.__search_by_computer( None, None, None, ram, hard_disk ) )
 
-	def search_mouse( self ):
-		pass
+	def search_mouse( self, wireless: bool, button_amount: bool ):
+		return ( self.__search_by_mouse( wireless, button_amount ) )
 
 	def list_quantity( self ):
-		pass
+		count = Computer.count()
+		print(	f"Quantity of {Util.plural( "computer", count)} in " +
+				f"inventory {ASSOC_SYM} {count} " )
+		count = Screen.count()
+		print(	f"Quantity of {Util.plural( "screen", count)} in " +
+				f"inventory {ASSOC_SYM} {count} " )
+		count = Keyboard.count()
+		print(	f"Quantity of {Util.plural( "keyboard", count)} in " +
+				f"inventory {ASSOC_SYM} {count} " )
+		count = Mouse.count()
+		print(	f"Quantity of {Util.plural( "mouse", count)} in " +
+				f"inventory {ASSOC_SYM} {count} " )
