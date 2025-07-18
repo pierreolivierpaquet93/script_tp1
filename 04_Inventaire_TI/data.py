@@ -326,7 +326,7 @@ class Mouse ( Product ):
 								wireless: bool = None,
 								buttons: bool = None ) -> bool:
 		if ( ( wireless and wireless != self.__wireless ) or
-	  		 ( buttons and buttons != self._buttons ) ):
+	  		 ( buttons and buttons != self.__button_amount ) ):
 			return ( False )
 		return ( True )
 
@@ -342,8 +342,10 @@ class Inventory:
 		for product in self.__stock:
 			print( product )
 
-	def list_inventory_of_user( self ):
-		pass
+	def list_inventory_of_user( self, user: User ):
+		for product in self.__stock:
+			if ( product.checkAttributes( None, None, user ) ):
+				print( product )
 
 	def list_values( self ):
 		pass
